@@ -16,12 +16,13 @@ public abstract class Zombie extends ImageView {
         this.health=kind;
         this.xPosition=xPosition;
         this.yPosition=yPosition;
+        setImage(kind);
     }
     public  void move(){
 
     }
-    public  void setImage(String path){
-        super.setImage(new Image(path));
+    private   void setImage(int kind){
+       // super.setImage(new Image(path));
     }
 
     public int getxPosition() {

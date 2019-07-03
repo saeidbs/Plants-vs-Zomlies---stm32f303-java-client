@@ -1,8 +1,12 @@
 package sample.game.plant;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import sample.utills.Utill;
 
-public abstract class Plant {
+import java.nio.file.Path;
+
+public abstract class Plant  extends ImageView {
     private int kind,health;
     private int xPosition,yPosition;
     private int size=4* Utill.screenUnit;
@@ -12,12 +16,13 @@ public abstract class Plant {
         this.health = kind;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
+        setImage(kind);
     }
 
 
 
-    private void setImage(String path){
-        super
+    private void setImage(int kind){
+      //  super.setImage(new Image(path));
     }
     public int getHealth() {
         return health;

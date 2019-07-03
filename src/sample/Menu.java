@@ -31,7 +31,7 @@ public class Menu extends Stage {
     private Button newGameButton;
     private Button loadGameButton;
     private Button aboutGameButton;
-    GridPane gridPane;
+
     private void aboutGameListener(){
 
         Alert alert=new Alert(Alert.AlertType.INFORMATION, Utill.aboutGameMessage);
@@ -73,7 +73,7 @@ public class Menu extends Stage {
 
     public Menu() {
 
-         gridPane=new GridPane();
+         GridPane gridPane=new GridPane();
        gridPane.setPadding(new Insets(10*Utill.screenUnit));
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setVgap(10*Utill.screenUnit);
