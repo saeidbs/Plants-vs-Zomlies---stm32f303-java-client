@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
+import sample.game.GameBoard;
 import sample.utills.Utill;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -69,6 +70,8 @@ public class Menu extends Stage {
 //        pathTransition.setNode(imageView);
 //        pathTransition.setPath(line);
 //        pathTransition.play();
+        new GameBoard().show();
+        this.close();
     }
 
     public Menu() {
@@ -117,6 +120,7 @@ public class Menu extends Stage {
         this.setTitle(Utill.menuTitle);
         this.setResizable(false);
         this.setScene(scene);
+
 
     }
 }
