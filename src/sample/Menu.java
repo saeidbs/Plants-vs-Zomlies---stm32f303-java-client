@@ -3,9 +3,14 @@ package sample;
 
 
 import com.sun.webkit.network.Util;
+import javafx.animation.PathTransition;
 import javafx.geometry.HPos;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
+import javafx.util.Duration;
 import sample.utills.Utill;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +31,7 @@ public class Menu extends Stage {
     private Button newGameButton;
     private Button loadGameButton;
     private Button aboutGameButton;
-
+    GridPane gridPane;
     private void aboutGameListener(){
 
         Alert alert=new Alert(Alert.AlertType.INFORMATION, Utill.aboutGameMessage);
@@ -51,12 +56,24 @@ public class Menu extends Stage {
 
     }
     private void loadGameButtonListener(){
-
+//        ImageView imageView=new ImageView();
+//        imageView.setImage(new Image("\\sample\\wormDamage.png"));
+//        imageView.setFitHeight(50);
+//        imageView.setFitWidth(50);
+//        imageView.setX(50);
+//        imageView.setY(50);
+//        gridPane.add(imageView,2,2);
+//        PathTransition pathTransition=new PathTransition();
+//        pathTransition.setDuration(Duration.seconds(20));
+//        Line line=new Line(50,10,200,200);
+//        pathTransition.setNode(imageView);
+//        pathTransition.setPath(line);
+//        pathTransition.play();
     }
 
     public Menu() {
 
-        GridPane gridPane=new GridPane();
+         gridPane=new GridPane();
        gridPane.setPadding(new Insets(10*Utill.screenUnit));
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setVgap(10*Utill.screenUnit);
