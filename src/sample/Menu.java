@@ -2,7 +2,9 @@ package sample;
 
 
 
+import com.sun.webkit.network.Util;
 import javafx.geometry.HPos;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import sample.utills.Utill;
 import javafx.event.ActionEvent;
@@ -17,6 +19,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.util.Optional;
+
 
 public class Menu extends Stage {
     private Button newGameButton;
@@ -27,11 +31,23 @@ public class Menu extends Stage {
 
         Alert alert=new Alert(Alert.AlertType.INFORMATION, Utill.aboutGameMessage);
         alert.setTitle(Utill.aboutGameTitle);
+        alert.setHeaderText(Utill.aboutGameHeader);
 
         alert.show();
     }
 
     private void newGameButtonListener(){
+        TextInputDialog textInputDialog=new TextInputDialog(Utill.defaultName);
+        textInputDialog.setTitle(Utill.newGameTitle);
+        textInputDialog.setHeaderText(Utill.headerDialogInputNewGame);
+        textInputDialog.setContentText(Utill.contexDialogInputNewGame);
+
+        Optional<String> result=textInputDialog.showAndWait();
+
+        result.ifPresent(name->{
+            System.out.println(name);
+
+        });
 
     }
     private void loadGameButtonListener(){

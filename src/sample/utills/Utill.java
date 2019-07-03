@@ -12,5 +12,11 @@ public abstract class Utill {
     public static final String loadGameTitle="Load Game";
 
     public static final String menuTitle="MENU";
+    public static final String aboutGameHeader="About The Game";
+
+
+    public static final String defaultName="You'r Name";
+    public static final String headerDialogInputNewGame="Enter your name:";
+    public static final String contexDialogInputNewGame="Name:";
 
 }
