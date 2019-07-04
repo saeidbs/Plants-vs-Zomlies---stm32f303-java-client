@@ -2,7 +2,9 @@ package sample.utills;
 
 public abstract class Utill {
     public static final int screenUnit=4;
-    public static final int pageSize=250 * screenUnit;
+    public static final int pageSize=250 * screenUnit*15/10;
+    public static final int screenHeight=200*screenUnit;
+    public static final int xScreen=pageSize/5;
     public static final int yScreen=0;
 
     public static final String aboutGameMessage="bazi kon pare shi bekhandim";
