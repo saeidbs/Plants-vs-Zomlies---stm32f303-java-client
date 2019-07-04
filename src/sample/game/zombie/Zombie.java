@@ -1,11 +1,16 @@
 package sample.game.zombie;
 
+import com.sun.webkit.network.Util;
+import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import sample.game.GameBoard;
 import sample.utills.Utill;
@@ -14,66 +19,59 @@ import sample.utills.Utill;
 
 public abstract class Zombie extends ImageView {
     private int kind,health;
-    private int xPosition,yPosition;
+
     private int size=5* Utill.screenUnit;
+    int row,column;
     
-    public Zombie(int kind, int xPosition, int yPosition) {
+    public Zombie(int kind, int row, int column) {
+        this.row=row;
+        this.column=column;
         this.kind=kind;
         this.health=kind;
-        this.xPosition=xPosition;
-        this.yPosition=yPosition;
+
+        setLayoutX(getxPosition());
+        setLayoutY(getyPosition());
+        setFitWidth(Utill.zombieFitWidth);
+        setFitHeight(Utill.zombieFitHeight);
         setImage(kind);
     }
     public  void move(){
         //        ImageView imageView=new ImageView();
-//        imageView.setImage(new Image("\\sample\\wormDamage.png"));
-//        imageView.setFitHeight(50);
-//        imageView.setFitWidth(50);
-//        imageView.setX(50);
-//        imageView.setY(50);
-//        gridPane.add(imageView,2,2);
-     Zombie mainZombie=this;
 
-        int index=  GameBoard.getGridPane().getChildren().indexOf(this);
-       PathTransition pathTransition=new PathTransition();
-       pathTransition.setDuration(Duration.millis(200));
-
-       Line line=new Line(getxPosition(),getyPosition(),getxPosition(),getyPosition()+Utill.boardGameDistanceY);
-        setyPosition(getyPosition()+Utill.boardGameDistanceY);
-        System.out.println(getyPosition());
-       pathTransition.setNode(this);
-       pathTransition.setPath(line);
-       pathTransition.play();
-       pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
-           @Override
-           public void handle(ActionEvent actionEvent) {
-               Zombie change;
-               switch (kind){
-                   case 1: change=new LevelOneZombie(getxPosition(),getyPosition());
-                            break;
-                   case 5:change=new TempZombie(getxPosition(),getyPosition());
+        AnimationTimer animationTimer=new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                Zombie.this.setY(Zombie.this.getY() + Utill.animationStep);
+                if (Zombie.this.getY() >getyPosition()+rowToY(1)) {
+                    row++;
+                    this.stop();
+                }
+            }
+        };
 
 
-                       break;
-                   default:
-                      change=new LevelOneZombie(getxPosition(),getyPosition());
-                      break;
-               }
+        animationTimer.start();
 
-                 GameBoard.replaceZombie(mainZombie,change);
-               System.out.println("hmmmmmmmmmmm"+change.getxPosition()+","+change.getyPosition());
-                 for (int i=0;i<GameBoard.getGridPane().getChildren().size();i++){
-                   Zombie findZombie= (Zombie) GameBoard.getGridPane().getChildren().get(i);
-                   if (findZombie.getxPosition()==change.getxPosition()&&findZombie.getyPosition()==change.getyPosition()) {
-                       System.out.println("find");
-                     GameBoard.replaceZombie(change,findZombie);
-                       break;
-                   }
 
-               }
-               System.out.println(index);
-           }
-       });
+//       PathTransition pathTransition=new PathTransition();
+//       pathTransition.setDuration(Duration.seconds(3));
+//
+//      Line line=new Line(getxPosition(),getyPosition(),getxPosition(),getyPosition()+rowToY(1));
+//
+//      setLayoutY(getyPosition()+rowToY(1));
+//
+//     //  Line line=new Line(getX(),getY(),getX(),rowToY(1));
+////       Path path=new Path();
+////        MoveTo moveTo=new MoveTo(getxPosition(),getyPosition());
+////        LineTo lineTo=new LineTo(getxPosition(),getyPosition()+100);
+////
+////        setLayoutY(getyPosition()+100);
+////        path.getElements().addAll(moveTo,lineTo);
+//         row++;
+//        System.out.println("dsadas"+getyPosition());
+//       pathTransition.setNode(this);
+//       pathTransition.setPath(line);
+//       pathTransition.play();
 
 
     }
@@ -92,7 +90,7 @@ public abstract class Zombie extends ImageView {
     }
 
     public int getxPosition() {
-        return xPosition;
+        return columnToX(column);
     }
 
     public int getKind() {
@@ -104,22 +102,17 @@ public abstract class Zombie extends ImageView {
     }
 
     public int getyPosition() {
-        return yPosition;
+        return rowToY(row);
     }
 
-    public int getSize() {
-        return size;
+    public static int rowToY(int row){
+        return row* Utill.zombieFitHeight;
+    }
+    public static int columnToX(int column){
+        return column* Utill.zombieFitWidth;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
 
-    public void setxPosition(int xPosition) {
-        this.xPosition = xPosition;
-    }
 
-    public void setyPosition(int yPosition) {
-        this.yPosition = yPosition;
-    }
+
 }

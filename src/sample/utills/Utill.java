@@ -8,6 +8,13 @@ public abstract class Utill {
     public static final int yScreen=0;
     public static final int boardGameDistanceY=screenHeight/4;
 
+    public static int zombieFitWidth=(int)((Utill.pageSize/1.25-30)/20);
+    public static int zombieFitHeight=(int)(Utill.screenHeight/4);
+
+    public static double animationStep=3;
+
+
+
     public static final String aboutGameMessage="bazi kon pare shi bekhandim";
     public static final String aboutGameTitle="About Game";
     public static final String menuWelcome="Welcome To Game";
