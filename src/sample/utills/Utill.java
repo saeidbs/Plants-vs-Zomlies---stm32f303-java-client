@@ -6,6 +6,7 @@ public abstract class Utill {
     public static final int screenHeight=200*screenUnit;
     public static final int xScreen=pageSize/5;
     public static final int yScreen=0;
+    public static final int boardGameDistanceY=screenHeight/4;
 
     public static final String aboutGameMessage="bazi kon pare shi bekhandim";
     public static final String aboutGameTitle="About Game";
