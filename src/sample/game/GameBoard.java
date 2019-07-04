@@ -14,6 +14,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import sample.game.plant.LevelOnePlant;
+import sample.game.plant.Plant;
 import sample.game.zombie.LevelOneZombie;
 import sample.game.zombie.TempZombie;
 import sample.game.zombie.Zombie;
@@ -61,6 +63,13 @@ public class GameBoard extends Stage {
                 BackgroundPosition.CENTER,
                 new BackgroundSize(Utill.pageSize/1.25-30, Utill.screenHeight, true, true, true, true))));
 
+        pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                pane.getChildren().add(new LevelOnePlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+            }
+        });
+
 
         VBox rightVBox=new VBox();
         scoreLabel=new Label("SCORE LABEL");
@@ -69,11 +78,14 @@ public class GameBoard extends Stage {
         saveButton=new Button("SAVE BUTTON");
                 LevelOneZombie levelOneZombie=new LevelOneZombie(0,19);
 
+
                 pane.getChildren().add(levelOneZombie);
+
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 levelOneZombie.move();
+
 
             }
         });

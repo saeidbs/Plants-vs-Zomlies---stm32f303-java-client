@@ -10,6 +10,8 @@ public abstract class Utill {
 
     public static int zombieFitWidth=(int)((Utill.pageSize/1.25-30)/20);
     public static int zombieFitHeight=(int)(Utill.screenHeight/4);
+    public static int plantFitWidth=(int)((Utill.pageSize/1.25-30)/20);
+    public static int plantFitHeight=(int)(Utill.screenHeight/4);
 
     public static double animationStep=3;
 
