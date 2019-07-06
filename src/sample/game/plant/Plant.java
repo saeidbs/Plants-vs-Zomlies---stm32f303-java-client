@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public abstract class Plant  extends ImageView {
     private int kind,health;
     private int xPosition,yPosition;
-    private int size=4* Utill.screenUnit;
+
 
     public Plant(int kind,int xPosition, int yPosition) {
         this.kind = kind;
@@ -53,10 +53,10 @@ public abstract class Plant  extends ImageView {
     public  int ytoRow(int yPosition){
         return yPosition/Utill.plantFitHeight;
     }
-    public  int rowToY(int row){
+    public  static int rowToY(int row){
         return row* Utill.plantFitHeight;
     }
-    public  int columnToX(int column){
+    public static int columnToX(int column){
         return column* Utill.plantFitWidth;
     }
 }

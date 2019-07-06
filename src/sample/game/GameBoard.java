@@ -14,15 +14,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import sample.game.plant.LevelOnePlant;
 import sample.game.plant.LevelThreePlant;
 import sample.game.plant.LevelTwoPlant;
 import sample.game.plant.Plant;
-import sample.game.zombie.LevelOneZombie;
-import sample.game.zombie.TempZombie;
-import sample.game.zombie.Zombie;
+import sample.game.zombie.*;
 import sample.utills.Utill;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class GameBoard extends Stage {
@@ -35,6 +36,8 @@ public class GameBoard extends Stage {
     private Button saveButton;
     private static Pane pane;
     private int plantSelectedID;
+    private Map<Pair<Integer ,Integer>,Zombie> zombieMap=new HashMap<>();
+    private Map<Pair<Integer ,Integer>,Plant> plantMap=new HashMap<>();
 
     public GameBoard(){
         pane=new Pane();
@@ -89,8 +92,11 @@ public class GameBoard extends Stage {
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                levelOneZombie.move(3,19);
-
+                creatPlant(1,3,8);
+                creatZombie(1,1,7);
+               moveZombie(1,7,2,7);
+            //   moveZombie(2,7,3,7);
+           //     levelOneZombie.move(3,19);
 
             }
         });
@@ -205,6 +211,62 @@ public class GameBoard extends Stage {
 
 
     }
+
+
+
+    public void creatZombie(int kind,int row,int column){
+        Zombie zombie=null;
+        switch (kind){
+            case 1:
+              zombie=new LevelOneZombie(row,column);
+                break;
+            case 2:
+                zombie=new LevelTwoZombie(row,column);
+                break;
+            case 3:
+                zombie=new LevelThreeZombie(row,column);
+                break;
+            case 4:
+                zombie=new LevelFourZombie(row,column);
+                break;
+
+        }
+             if (zombie!=null) {
+                 zombieMap.put(new Pair<>(row,column),zombie);
+                 pane.getChildren().add(zombie);
+             }
+
+
+    }
+
+    public void creatPlant(int kind,int row,int column){
+        Plant plant = null;
+        switch (kind){
+            case 1:
+                plant=new LevelOnePlant(Plant.columnToX(column),Plant.rowToY(row));
+                break;
+            case 2:
+                plant=new LevelTwoPlant(Plant.columnToX(column),Plant.rowToY(row));
+                break;
+            case 3:
+                plant=new LevelThreePlant(Plant.columnToX(column),Plant.rowToY(row));
+                break;
+        }
+        if(plant!=null){
+            plantMap.put(new Pair<>(row,column),plant);
+            pane.getChildren().add(plant);
+        }
+    }
+
+    public void moveZombie(int oldRow,int oldColumn,int newRow,int newColumn){
+        Zombie zombie;
+
+        zombie=zombieMap.remove(new Pair<>(oldRow,oldColumn));
+        zombieMap.put(new Pair<>(newRow,newColumn),zombie);
+        zombie.move(newRow,newColumn);
+
+    }
+
 
 
 

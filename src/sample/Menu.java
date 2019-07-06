@@ -57,27 +57,15 @@ public class Menu extends Stage {
 
     }
     private void loadGameButtonListener(){
-//        ImageView imageView=new ImageView();
-//        imageView.setImage(new Image("\\sample\\wormDamage.png"));
-//        imageView.setFitHeight(50);
-//        imageView.setFitWidth(50);
-//        imageView.setX(50);
-//        imageView.setY(50);
-//        gridPane.add(imageView,2,2);
-//        PathTransition pathTransition=new PathTransition();
-//        pathTransition.setDuration(Duration.seconds(20));
-//        Line line=new Line(50,10,200,200);
-//        pathTransition.setNode(imageView);
-//        pathTransition.setPath(line);
-//        pathTransition.play();
-        new GameBoard().show();
+
+       Utill.controller.showGameBoard();
         this.close();
     }
 
     public Menu() {
 
          GridPane gridPane=new GridPane();
-       gridPane.setPadding(new Insets(10*Utill.screenUnit));
+        gridPane.setPadding(new Insets(10*Utill.screenUnit));
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setVgap(10*Utill.screenUnit);
         gridPane.setHgap(1* Utill.screenUnit);
