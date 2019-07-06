@@ -52,28 +52,6 @@ public abstract class Zombie extends ImageView {
 
         animationTimer.start();
 
-
-//       PathTransition pathTransition=new PathTransition();
-//       pathTransition.setDuration(Duration.seconds(3));
-//
-//      Line line=new Line(getxPosition(),getyPosition(),getxPosition(),getyPosition()+rowToY(1));
-//
-//      setLayoutY(getyPosition()+rowToY(1));
-//
-//     //  Line line=new Line(getX(),getY(),getX(),rowToY(1));
-////       Path path=new Path();
-////        MoveTo moveTo=new MoveTo(getxPosition(),getyPosition());
-////        LineTo lineTo=new LineTo(getxPosition(),getyPosition()+100);
-////
-////        setLayoutY(getyPosition()+100);
-////        path.getElements().addAll(moveTo,lineTo);
-//         row++;
-//        System.out.println("dsadas"+getyPosition());
-//       pathTransition.setNode(this);
-//       pathTransition.setPath(line);
-//       pathTransition.play();
-
-
     }
     private   void setImage(int kind){
         String path="dasdas";

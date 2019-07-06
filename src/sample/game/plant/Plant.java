@@ -14,7 +14,11 @@ public abstract class Plant  extends ImageView {
 
     public Plant(int kind,int xPosition, int yPosition) {
         this.kind = kind;
-        this.health = kind;
+
+        if (kind==3)
+            this.health = kind+1;
+        else
+            this.health=kind;
 
         this.xPosition = columnToX(xtoColumn(xPosition));
         this.yPosition = rowToY(ytoRow(yPosition));
@@ -29,7 +33,7 @@ public abstract class Plant  extends ImageView {
 
 
     private void setImage(int kind){
-       super.setImage(new Image("\\sample\\orange.png"));
+       super.setImage(new Image("\\sample\\download.png"));
     }
     public int getHealth() {
         return health;
