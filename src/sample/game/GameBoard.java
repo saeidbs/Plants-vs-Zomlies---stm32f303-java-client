@@ -86,14 +86,21 @@ public class GameBoard extends Stage {
         saveButton=new Button("SAVE BUTTON");
                 LevelOneZombie levelOneZombie=new LevelOneZombie(0,19);
 
-
+                zombieMap.put(new Pair<>(0,19),levelOneZombie);
                 pane.getChildren().add(levelOneZombie);
+
+        LevelOnePlant levelOnePlant=new LevelOnePlant(3,19);
+
+        plantMap.put(new Pair<>(3,19),levelOnePlant);
+        pane.getChildren().add(levelOnePlant);
 
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 creatPlant(1,3,8);
                 creatZombie(1,1,7);
+                removeZombie(0,19);
+                removePlant(3,19);
                moveZombie(1,7,2,7);
             //   moveZombie(2,7,3,7);
            //     levelOneZombie.move(3,19);
@@ -194,17 +201,17 @@ public class GameBoard extends Stage {
         switch (plantSelectedID){
             case 1:
                 if (LevelOnePlant.enable)
-                pane.getChildren().add(new LevelOnePlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+                pane.getChildren().add(new LevelOnePlant(Plant.ytoRow((int)mouseEvent.getY()),Plant.xtoColumn((int)mouseEvent.getX())));
                 LevelOnePlant.enable=false;
                 break;
             case 2:
                 if (LevelTwoPlant.enable)
-                pane.getChildren().add(new LevelTwoPlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+                pane.getChildren().add(new LevelTwoPlant(Plant.ytoRow((int)mouseEvent.getY()),Plant.xtoColumn((int)mouseEvent.getX())));
                 LevelTwoPlant.enable=false;
                 break;
             case 3:
                 if (LevelThreePlant.enable)
-                pane.getChildren().add(new LevelThreePlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+                pane.getChildren().add(new LevelThreePlant(Plant.ytoRow((int)mouseEvent.getY()),Plant.xtoColumn((int)mouseEvent.getX())));
                 LevelThreePlant.enable=false;
                 break;
         }
@@ -243,13 +250,13 @@ public class GameBoard extends Stage {
         Plant plant = null;
         switch (kind){
             case 1:
-                plant=new LevelOnePlant(Plant.columnToX(column),Plant.rowToY(row));
+                plant=new LevelOnePlant(row,column);
                 break;
             case 2:
-                plant=new LevelTwoPlant(Plant.columnToX(column),Plant.rowToY(row));
+                plant=new LevelTwoPlant(row,column);
                 break;
             case 3:
-                plant=new LevelThreePlant(Plant.columnToX(column),Plant.rowToY(row));
+                plant=new LevelThreePlant(row,column);
                 break;
         }
         if(plant!=null){
@@ -268,7 +275,19 @@ public class GameBoard extends Stage {
     }
 
 
+    public void removeZombie(int row,int column){
+        Zombie zombie;
 
+        zombie=zombieMap.remove(new Pair<>(row,column));
+        pane.getChildren().remove(zombie);
+    }
+    public void removePlant(int row,int column){
+        Plant plant;
+
+        plant=plantMap.remove(new Pair<>(row,column));
+        pane.getChildren().remove(plant);
+
+    }
 
 
 }
