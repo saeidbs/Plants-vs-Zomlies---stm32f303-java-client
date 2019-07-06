@@ -15,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import sample.game.plant.LevelOnePlant;
+import sample.game.plant.LevelThreePlant;
+import sample.game.plant.LevelTwoPlant;
 import sample.game.plant.Plant;
 import sample.game.zombie.LevelOneZombie;
 import sample.game.zombie.TempZombie;
@@ -29,8 +31,10 @@ public class GameBoard extends Stage {
     private Label scoreLabel;
     private Label lifeLabel;
     private Label informationLabel;
+    private Label temperatureLabel;
     private Button saveButton;
     private static Pane pane;
+    private int plantSelectedID;
 
     public GameBoard(){
         pane=new Pane();
@@ -66,7 +70,8 @@ public class GameBoard extends Stage {
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                pane.getChildren().add(new LevelOnePlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+              //  pane.getChildren().add(new LevelOnePlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+                boardGameClick(mouseEvent);
             }
         });
 
@@ -74,7 +79,7 @@ public class GameBoard extends Stage {
         VBox rightVBox=new VBox();
         scoreLabel=new Label("SCORE LABEL");
         lifeLabel=new Label("LIFE LABEL");
-        // TODO: 7/4/2019 add plant
+        temperatureLabel=new Label("TEMPERATURE LABEL");
         saveButton=new Button("SAVE BUTTON");
                 LevelOneZombie levelOneZombie=new LevelOneZombie(0,19);
 
@@ -84,13 +89,58 @@ public class GameBoard extends Stage {
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                levelOneZombie.move();
+                levelOneZombie.move(3,19);
 
 
             }
         });
-        rightVBox.getChildren().addAll(scoreLabel,lifeLabel,saveButton);
-        rightVBox.setAlignment(Pos.CENTER);
+
+
+        VBox subRightVbox=new VBox();
+        LevelOnePlant tempLevelOnePlant=new LevelOnePlant(0,0);
+        tempLevelOnePlant.setFitHeight(Utill.plantFitHeight*0.6);
+        tempLevelOnePlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("plant 1 "+mouseEvent.getX()+" , "+mouseEvent.getY());
+                plantVboxClick(1);
+            }
+        });
+
+        LevelTwoPlant tempLevelTwoPlant=new LevelTwoPlant(0,0);
+        tempLevelTwoPlant.setFitHeight(Utill.plantFitHeight*0.6);
+        tempLevelTwoPlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("plant 2 "+mouseEvent.getX()+" , "+mouseEvent.getY());
+                plantVboxClick(2);
+            }
+        });
+
+
+
+        LevelThreePlant tempLevelThreePlant=new LevelThreePlant(0,0);
+        tempLevelThreePlant.setFitHeight(Utill.plantFitHeight*0.6);
+        tempLevelThreePlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("plant 3 "+mouseEvent.getX()+" , "+mouseEvent.getY());
+                plantVboxClick(3);
+            }
+        });
+
+
+        subRightVbox.getChildren().addAll(tempLevelOnePlant,tempLevelTwoPlant,tempLevelThreePlant);
+        subRightVbox.setAlignment(Pos.CENTER);
+        subRightVbox.setSpacing(2*Utill.screenUnit);
+        subRightVbox.setPrefSize(129,Utill.screenHeight/3);
+
+
+
+
+
+        rightVBox.getChildren().addAll(scoreLabel,lifeLabel,temperatureLabel,subRightVbox,saveButton);
+        //rightVBox.setAlignment(Pos.CENTER);
         rightVBox.setSpacing(2* Utill.screenUnit);
         rightVBox.setLayoutX(pane.getLayoutX()+pane.getPrefWidth());
         rightVBox.setLayoutY(0);
@@ -120,6 +170,41 @@ public class GameBoard extends Stage {
         this.setResizable(false);
     }
 
+
+
+
+    private void plantVboxClick(int kind){
+        switch (kind){
+            case 1:
+            case 2:
+            case 3:
+                    plantSelectedID=kind;
+                    break;
+        }
+
+    }
+
+    private void boardGameClick(MouseEvent mouseEvent){
+        switch (plantSelectedID){
+            case 1:
+                if (LevelOnePlant.enable)
+                pane.getChildren().add(new LevelOnePlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+                LevelOnePlant.enable=false;
+                break;
+            case 2:
+                if (LevelTwoPlant.enable)
+                pane.getChildren().add(new LevelTwoPlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+                LevelTwoPlant.enable=false;
+                break;
+            case 3:
+                if (LevelThreePlant.enable)
+                pane.getChildren().add(new LevelThreePlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+                LevelThreePlant.enable=false;
+                break;
+        }
+
+
+    }
 
 
 

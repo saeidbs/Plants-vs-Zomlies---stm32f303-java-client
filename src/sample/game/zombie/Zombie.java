@@ -35,15 +35,16 @@ public abstract class Zombie extends ImageView {
         setFitHeight(Utill.zombieFitHeight);
         setImage(kind);
     }
-    public  void move(){
+    public  void move(int row,int column){
         //        ImageView imageView=new ImageView();
 
         AnimationTimer animationTimer=new AnimationTimer() {
             @Override
             public void handle(long l) {
                 Zombie.this.setY(Zombie.this.getY() + Utill.animationStep);
-                if (Zombie.this.getY() >getyPosition()+rowToY(1)) {
-                    row++;
+                if (Zombie.this.getY() >getyPosition()+rowToY(Math.abs(row-Zombie.this.row))) {
+                    Zombie.this.row=row;
+                    Zombie.this.column=column;
                     this.stop();
                 }
             }
