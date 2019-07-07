@@ -14,11 +14,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import sample.game.zombie.LevelOneZombie;
-import sample.game.zombie.TempZombie;
-import sample.game.zombie.Zombie;
+import javafx.util.Pair;
+import sample.game.plant.LevelOnePlant;
+import sample.game.plant.LevelThreePlant;
+import sample.game.plant.LevelTwoPlant;
+import sample.game.plant.Plant;
+import sample.game.zombie.*;
 import sample.utills.Utill;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class GameBoard extends Stage {
@@ -27,8 +32,12 @@ public class GameBoard extends Stage {
     private Label scoreLabel;
     private Label lifeLabel;
     private Label informationLabel;
+    private Label temperatureLabel;
     private Button saveButton;
     private static Pane pane;
+    private int plantSelectedID;
+    private Map<Pair<Integer ,Integer>,Zombie> zombieMap=new HashMap<>();
+    private Map<Pair<Integer ,Integer>,Plant> plantMap=new HashMap<>();
 
     public GameBoard(){
         pane=new Pane();
@@ -61,24 +70,90 @@ public class GameBoard extends Stage {
                 BackgroundPosition.CENTER,
                 new BackgroundSize(Utill.pageSize/1.25-30, Utill.screenHeight, true, true, true, true))));
 
+        pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+              //  pane.getChildren().add(new LevelOnePlant((int)mouseEvent.getX(),(int)mouseEvent.getY()));
+                boardGameClick(mouseEvent);
+            }
+        });
+
 
         VBox rightVBox=new VBox();
         scoreLabel=new Label("SCORE LABEL");
         lifeLabel=new Label("LIFE LABEL");
-        // TODO: 7/4/2019 add plant
+        temperatureLabel=new Label("TEMPERATURE LABEL");
         saveButton=new Button("SAVE BUTTON");
                 LevelOneZombie levelOneZombie=new LevelOneZombie(0,19);
 
+                zombieMap.put(new Pair<>(0,19),levelOneZombie);
                 pane.getChildren().add(levelOneZombie);
+
+        LevelOnePlant levelOnePlant=new LevelOnePlant(3,19);
+
+        plantMap.put(new Pair<>(3,19),levelOnePlant);
+        pane.getChildren().add(levelOnePlant);
+
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                levelOneZombie.move();
+                creatPlant(1,3,8);
+                creatZombie(1,1,7);
+                removeZombie(0,19);
+                removePlant(3,19);
+               moveZombie(1,7,2,7);
+            //   moveZombie(2,7,3,7);
+           //     levelOneZombie.move(3,19);
 
             }
         });
-        rightVBox.getChildren().addAll(scoreLabel,lifeLabel,saveButton);
-        rightVBox.setAlignment(Pos.CENTER);
+
+
+        VBox subRightVbox=new VBox();
+        LevelOnePlant tempLevelOnePlant=new LevelOnePlant(0,0);
+        tempLevelOnePlant.setFitHeight(Utill.plantFitHeight*0.6);
+        tempLevelOnePlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("plant 1 "+mouseEvent.getX()+" , "+mouseEvent.getY());
+                plantVboxClick(1);
+            }
+        });
+
+        LevelTwoPlant tempLevelTwoPlant=new LevelTwoPlant(0,0);
+        tempLevelTwoPlant.setFitHeight(Utill.plantFitHeight*0.6);
+        tempLevelTwoPlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("plant 2 "+mouseEvent.getX()+" , "+mouseEvent.getY());
+                plantVboxClick(2);
+            }
+        });
+
+
+
+        LevelThreePlant tempLevelThreePlant=new LevelThreePlant(0,0);
+        tempLevelThreePlant.setFitHeight(Utill.plantFitHeight*0.6);
+        tempLevelThreePlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("plant 3 "+mouseEvent.getX()+" , "+mouseEvent.getY());
+                plantVboxClick(3);
+            }
+        });
+
+
+        subRightVbox.getChildren().addAll(tempLevelOnePlant,tempLevelTwoPlant,tempLevelThreePlant);
+        subRightVbox.setAlignment(Pos.CENTER);
+        subRightVbox.setSpacing(2*Utill.screenUnit);
+        subRightVbox.setPrefSize(129,Utill.screenHeight/3);
+
+
+
+
+
+        rightVBox.getChildren().addAll(scoreLabel,lifeLabel,temperatureLabel,subRightVbox,saveButton);
+        //rightVBox.setAlignment(Pos.CENTER);
         rightVBox.setSpacing(2* Utill.screenUnit);
         rightVBox.setLayoutX(pane.getLayoutX()+pane.getPrefWidth());
         rightVBox.setLayoutY(0);
@@ -110,6 +185,109 @@ public class GameBoard extends Stage {
 
 
 
+
+    private void plantVboxClick(int kind){
+        switch (kind){
+            case 1:
+            case 2:
+            case 3:
+                    plantSelectedID=kind;
+                    break;
+        }
+
+    }
+
+    private void boardGameClick(MouseEvent mouseEvent){
+        switch (plantSelectedID){
+            case 1:
+                if (LevelOnePlant.enable)
+                pane.getChildren().add(new LevelOnePlant(Plant.ytoRow((int)mouseEvent.getY()),Plant.xtoColumn((int)mouseEvent.getX())));
+                LevelOnePlant.enable=false;
+                break;
+            case 2:
+                if (LevelTwoPlant.enable)
+                pane.getChildren().add(new LevelTwoPlant(Plant.ytoRow((int)mouseEvent.getY()),Plant.xtoColumn((int)mouseEvent.getX())));
+                LevelTwoPlant.enable=false;
+                break;
+            case 3:
+                if (LevelThreePlant.enable)
+                pane.getChildren().add(new LevelThreePlant(Plant.ytoRow((int)mouseEvent.getY()),Plant.xtoColumn((int)mouseEvent.getX())));
+                LevelThreePlant.enable=false;
+                break;
+        }
+
+
+    }
+
+
+
+    public void creatZombie(int kind,int row,int column){
+        Zombie zombie=null;
+        switch (kind){
+            case 1:
+              zombie=new LevelOneZombie(row,column);
+                break;
+            case 2:
+                zombie=new LevelTwoZombie(row,column);
+                break;
+            case 3:
+                zombie=new LevelThreeZombie(row,column);
+                break;
+            case 4:
+                zombie=new LevelFourZombie(row,column);
+                break;
+
+        }
+             if (zombie!=null) {
+                 zombieMap.put(new Pair<>(row,column),zombie);
+                 pane.getChildren().add(zombie);
+             }
+
+
+    }
+
+    public void creatPlant(int kind,int row,int column){
+        Plant plant = null;
+        switch (kind){
+            case 1:
+                plant=new LevelOnePlant(row,column);
+                break;
+            case 2:
+                plant=new LevelTwoPlant(row,column);
+                break;
+            case 3:
+                plant=new LevelThreePlant(row,column);
+                break;
+        }
+        if(plant!=null){
+            plantMap.put(new Pair<>(row,column),plant);
+            pane.getChildren().add(plant);
+        }
+    }
+
+    public void moveZombie(int oldRow,int oldColumn,int newRow,int newColumn){
+        Zombie zombie;
+
+        zombie=zombieMap.remove(new Pair<>(oldRow,oldColumn));
+        zombieMap.put(new Pair<>(newRow,newColumn),zombie);
+        zombie.move(newRow,newColumn);
+
+    }
+
+
+    public void removeZombie(int row,int column){
+        Zombie zombie;
+
+        zombie=zombieMap.remove(new Pair<>(row,column));
+        pane.getChildren().remove(zombie);
+    }
+    public void removePlant(int row,int column){
+        Plant plant;
+
+        plant=plantMap.remove(new Pair<>(row,column));
+        pane.getChildren().remove(plant);
+
+    }
 
 
 }

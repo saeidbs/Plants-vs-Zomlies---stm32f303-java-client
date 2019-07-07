@@ -4,7 +4,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Control;
 import javafx.stage.Stage;
+import static sample.utills.Utill.controller;
 
 public class Main extends Application {
 
@@ -14,7 +16,8 @@ public class Main extends Application {
 //        primaryStage.setTitle("Hello World");
 //        primaryStage.setScene(new Scene(root, 300, 275));
 //        primaryStage.show();
-       new Menu().show();
+        controller=new Controller();
+       controller.showMenu();
     }
 
 

@@ -20,7 +20,6 @@ import sample.utills.Utill;
 public abstract class Zombie extends ImageView {
     private int kind,health;
 
-    private int size=5* Utill.screenUnit;
     int row,column;
     
     public Zombie(int kind, int row, int column) {
@@ -35,15 +34,16 @@ public abstract class Zombie extends ImageView {
         setFitHeight(Utill.zombieFitHeight);
         setImage(kind);
     }
-    public  void move(){
+    public  void move(int row,int column){
         //        ImageView imageView=new ImageView();
 
         AnimationTimer animationTimer=new AnimationTimer() {
             @Override
             public void handle(long l) {
                 Zombie.this.setY(Zombie.this.getY() + Utill.animationStep);
-                if (Zombie.this.getY() >getyPosition()+rowToY(1)) {
-                    row++;
+                if (Zombie.this.getY() >rowToY(Math.abs(row-Zombie.this.row))) {
+                    Zombie.this.row=row;
+                    Zombie.this.column=column;
                     this.stop();
                 }
             }
@@ -51,28 +51,6 @@ public abstract class Zombie extends ImageView {
 
 
         animationTimer.start();
-
-
-//       PathTransition pathTransition=new PathTransition();
-//       pathTransition.setDuration(Duration.seconds(3));
-//
-//      Line line=new Line(getxPosition(),getyPosition(),getxPosition(),getyPosition()+rowToY(1));
-//
-//      setLayoutY(getyPosition()+rowToY(1));
-//
-//     //  Line line=new Line(getX(),getY(),getX(),rowToY(1));
-////       Path path=new Path();
-////        MoveTo moveTo=new MoveTo(getxPosition(),getyPosition());
-////        LineTo lineTo=new LineTo(getxPosition(),getyPosition()+100);
-////
-////        setLayoutY(getyPosition()+100);
-////        path.getElements().addAll(moveTo,lineTo);
-//         row++;
-//        System.out.println("dsadas"+getyPosition());
-//       pathTransition.setNode(this);
-//       pathTransition.setPath(line);
-//       pathTransition.play();
-
 
     }
     private   void setImage(int kind){

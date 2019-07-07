@@ -2,27 +2,57 @@ package sample.game.plant;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import jdk.jshell.execution.Util;
 import sample.utills.Utill;
+
+
 
 import java.nio.file.Path;
 
 public abstract class Plant  extends ImageView {
     private int kind,health;
     private int xPosition,yPosition;
-    private int size=4* Utill.screenUnit;
 
-    public Plant(int kind,int xPosition, int yPosition) {
+
+    public Plant(int kind,int row, int column) {
         this.kind = kind;
-        this.health = kind;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
+
+        if (kind==3)
+            this.health = kind+1;
+        else
+            this.health=kind;
+
+        this.xPosition = columnToX(column);
+        this.yPosition = rowToY(row);
+
+        setLayoutX(getxPosition());
+        setLayoutY(getyPosition());
+        setFitWidth(Utill.plantFitWidth);
+        setFitHeight(Utill.plantFitHeight);
         setImage(kind);
     }
+//  public Plant(int kind,int xPosition, int yPosition) {
+//        this.kind = kind;
+//
+//        if (kind==3)
+//            this.health = kind+1;
+//        else
+//            this.health=kind;
+//
+//        this.xPosition = columnToX(xtoColumn(xPosition));
+//        this.yPosition = rowToY(ytoRow(yPosition));
+//
+//        setLayoutX(getxPosition());
+//        setLayoutY(getyPosition());
+//        setFitWidth(Utill.plantFitWidth);
+//        setFitHeight(Utill.plantFitHeight);
+//        setImage(kind);
+//    }
 
 
 
     private void setImage(int kind){
-      //  super.setImage(new Image(path));
+       super.setImage(new Image("\\sample\\download.png"));
     }
     public int getHealth() {
         return health;
@@ -34,5 +64,18 @@ public abstract class Plant  extends ImageView {
 
     public int getyPosition() {
         return yPosition;
+    }
+
+    public  static int xtoColumn(int xPosition){
+        return xPosition/ Utill.plantFitWidth;
+    }
+    public static int ytoRow(int yPosition){
+        return yPosition/Utill.plantFitHeight;
+    }
+    public   int rowToY(int row){
+        return row* Utill.plantFitHeight;
+    }
+    public  int columnToX(int column){
+        return column* Utill.plantFitWidth;
     }
 }
