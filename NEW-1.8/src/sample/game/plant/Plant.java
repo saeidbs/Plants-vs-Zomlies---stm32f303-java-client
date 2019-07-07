@@ -52,7 +52,18 @@ public abstract class Plant  extends ImageView {
 
 
     private void setImage(int kind){
-       super.setImage(new Image("\\sample\\download.png"));
+      // super.setImage(new Image("\\sample\\download.png"));
+        switch (kind) {
+            case 1:
+                super.setImage(new Image("\\sample\\game\\plant\\LevelOnePlant.png"));
+                break;
+            case 2:
+                super.setImage(new Image("\\sample\\game\\plant\\LevelTwoPlant.png"));
+                break;
+            case 3:
+            super.setImage(new Image("\\sample\\game\\plant\\LevelThreePlant.png"));
+            break;
+        }
     }
     public int getHealth() {
         return health;

@@ -3,6 +3,7 @@ package sample.game;
 import com.sun.javafx.util.Utils;
 import com.sun.prism.paint.Color;
 import com.sun.webkit.network.Util;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -260,8 +261,15 @@ public class GameBoard extends Stage {
                 break;
         }
         if(plant!=null){
-            plantMap.put(new Pair<>(row,column),plant);
-            pane.getChildren().add(plant);
+          final   Plant tempPlamt=plant;
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    plantMap.put(new Pair<>(row,column),tempPlamt);
+                    pane.getChildren().add(tempPlamt);
+                }
+            });
+
         }
     }
 

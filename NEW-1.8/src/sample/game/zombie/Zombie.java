@@ -54,11 +54,18 @@ public abstract class Zombie extends ImageView {
 
     }
     private   void setImage(int kind){
-        String path="dasdas";
+        String path="";
         switch (kind){
-            case 1 :path="\\sample\\wormDamage.png";
-
-            break;
+            case 1 :
+                    path="\\sample\\game\\zombie\\LevelOneZombie.png";
+                     break;
+            case 2:
+                     path="\\sample\\game\\zombie\\LevelTwoZombie.png";
+                     break;
+            case 3: path="\\sample\\game\\zombie\\LevelThreeZombie.png";
+                    break;
+            case 4:path="\\sample\\game\\zombie\\LevelFourZombie.png";
+                break;
             case  5: path="\\sample\\wormHalf.png";
             break;
         }
