@@ -241,7 +241,14 @@ public class GameBoard extends Stage {
         }
              if (zombie!=null) {
                  zombieMap.put(new Pair<>(row,column),zombie);
-                 pane.getChildren().add(zombie);
+
+                 Zombie finalZombie = zombie;
+                 Platform.runLater(new Runnable() {
+                     @Override
+                     public void run() {
+                        pane.getChildren().add(finalZombie);
+                     }
+                 });
              }
 
 
@@ -278,7 +285,13 @@ public class GameBoard extends Stage {
 
         zombie=zombieMap.remove(new Pair<>(oldRow,oldColumn));
         zombieMap.put(new Pair<>(newRow,newColumn),zombie);
-        zombie.move(newRow,newColumn);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                 zombie.move(newRow,newColumn);
+            }
+        });
 
     }
 
@@ -287,13 +300,26 @@ public class GameBoard extends Stage {
         Zombie zombie;
 
         zombie=zombieMap.remove(new Pair<>(row,column));
-        pane.getChildren().remove(zombie);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                pane.getChildren().remove(zombie);
+
+            }
+        });
     }
     public void removePlant(int row,int column){
         Plant plant;
 
         plant=plantMap.remove(new Pair<>(row,column));
-        pane.getChildren().remove(plant);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                pane.getChildren().remove(plant);
+            }
+        });
 
     }
 
