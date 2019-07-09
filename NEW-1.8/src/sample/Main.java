@@ -34,6 +34,7 @@ public class Main extends Application {
 
                     if (bufferedReader.ready()) {
                         String string = bufferedReader.readLine();
+                        System.out.println(string);
                         String dataString=string.substring(string.indexOf(":")+1);
                         String[] array = {};
 
@@ -41,41 +42,41 @@ public class Main extends Application {
                             array=dataString.split(",");
 
                             switch (string.substring(0,string.indexOf(":"))){
-                                case "pc:":
-                                    controller.getGameBoard().creatPlant(getInt(array[2]), getInt(array[0]), getInt(array[1]));
+                                case "pc":
+                                    controller.getGameBoard().creatPlant(getInt(array[0]), getInt(array[1]), getInt(array[2]));
                                     break;
 
-                                case "pr:":
+                                case "pr":
                                     controller.getGameBoard().removePlant(getInt(array[0]),getInt(array[1]));
                                     break;
-                                case "zc:":
+                                case "zc":
                                     controller.getGameBoard().creatZombie(getInt(array[0]),getInt(array[1]),getInt(array[2]));
                                     break;
-                                case "zm:":
+                                case "zm":
                                     controller.getGameBoard().moveZombie(getInt(array[0]),getInt(array[1]),getInt(array[2]),getInt(array[3]));
                                     break;
-                                case "zr:":
+                                case "zr":
                                     controller.getGameBoard().removeZombie(getInt(array[0]),getInt(array[1]));
                                     break;
-                                case "bc:":
+                                case "bc":
                                     controller.getGameBoard().creatBonus(getInt(array[0]),getInt(array[1]),getInt(array[2]));
                                     break;
-                                case "br:":
+                                case "br":
                                     controller.getGameBoard().removeBonus(getInt(array[0]),getInt(array[1]));
                                     break;
                                 case "l":
                                     controller.getGameBoard().setTemperatureLabel(array[0]);
                                     break;
-                                case "s:":
+                                case "s":
                                     controller.getGameBoard().setScoreLabel(array[0]);
                                     break;
-                                case "r:":
+                                case "r":
                                     controller.getGameBoard().setRoundLabel(array[0]);
                                     break;
-                                case "t:":
+                                case "t":
                                     controller.getGameBoard().setTimeLabel(array[0]);
                                     break;
-                                case "ls:":
+                                case "ls":
                                     controller.getGameBoard().setLifeLabel(array[0]);
                                     break;
                             }
