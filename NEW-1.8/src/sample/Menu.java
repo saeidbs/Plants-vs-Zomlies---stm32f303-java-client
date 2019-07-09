@@ -43,23 +43,26 @@ public class Menu extends Stage {
     }
 
     private void newGameButtonListener(){
-        TextInputDialog textInputDialog=new TextInputDialog(Utill.defaultName);
-        textInputDialog.setTitle(Utill.newGameTitle);
-        textInputDialog.setHeaderText(Utill.headerDialogInputNewGame);
-        textInputDialog.setContentText(Utill.contexDialogInputNewGame);
+        Utill.controller.showGameBoard();
+        this.close();
 
-        Optional<String> result=textInputDialog.showAndWait();
-
-        result.ifPresent(name->{
-            System.out.println(name);
-
-        });
+//        TextInputDialog textInputDialog=new TextInputDialog(Utill.defaultName);
+//        textInputDialog.setTitle(Utill.newGameTitle);
+//        textInputDialog.setHeaderText(Utill.headerDialogInputNewGame);
+//        textInputDialog.setContentText(Utill.contexDialogInputNewGame);
+//
+//        Optional<String> result=textInputDialog.showAndWait();
+//
+//        result.ifPresent(name->{
+//            System.out.println(name);
+//
+//        });
 
     }
     private void loadGameButtonListener(){
 
-       Utill.controller.showGameBoard();
-        this.close();
+//       Utill.controller.showGameBoard();
+//        this.close();
     }
 
     public Menu() {

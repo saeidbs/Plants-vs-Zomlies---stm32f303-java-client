@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +26,7 @@ import sample.utills.Utill;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class GameBoard extends Stage {
@@ -103,8 +105,24 @@ public class GameBoard extends Stage {
                 removeZombie(0,19);
                 removePlant(3,19);
                moveZombie(1,7,2,7);
-            //   moveZombie(2,7,3,7);
-           //     levelOneZombie.move(3,19);
+
+
+
+                TextInputDialog textInputDialog=new TextInputDialog(Utill.defaultName);
+                textInputDialog.setTitle(Utill.newGameTitle);
+                textInputDialog.setHeaderText(Utill.headerDialogInputNewGame);
+                textInputDialog.setContentText(Utill.contexDialogInputNewGame);
+
+                Optional<String> result=textInputDialog.showAndWait();
+
+                result.ifPresent(name->{
+                    System.out.println(name);
+
+                });
+
+
+
+
 
             }
         });
@@ -323,5 +341,32 @@ public class GameBoard extends Stage {
 
     }
 
+    public void setTimeLabel(String string){
+
+        timeLabel.setText(string);
+    }
+    public void setRoundLabel(String string){
+        roundLabel.setText(string);
+    }
+    public void setTemperatureLabel(String string){
+
+        temperatureLabel.setText(string);
+
+    }
+    public void setLifeLabel(String string){
+        lifeLabel.setText(string);
+    }
+    public void setScoreLabel(String string){
+        scoreLabel.setText(string);
+    }
+    public void setInformationLabel(String string){
+        informationLabel.setText(string);
+    }
+
+
+    private void saveGame(String string){
+
+        
+    }
 
 }
