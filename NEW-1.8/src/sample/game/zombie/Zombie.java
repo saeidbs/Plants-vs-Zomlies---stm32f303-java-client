@@ -41,7 +41,7 @@ public abstract class Zombie extends ImageView {
             @Override
             public void handle(long l) {
                 Zombie.this.setY(Zombie.this.getY() + Utill.animationStep);
-                if (Zombie.this.getY() >rowToY(Math.abs(row-Zombie.this.row))) {
+                if (Zombie.this.getY() >getyPosition()+rowToY(Math.abs(row-Zombie.this.row))) {
                     Zombie.this.row=row;
                     Zombie.this.column=column;
                     this.stop();
