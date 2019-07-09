@@ -7,11 +7,13 @@ import sample.utills.Utill;
 import javax.swing.text.Element;
 
 
-public class Bonus extends ImageView {
+public abstract class Bonus extends ImageView {
     private int row, column;
     private int score = 0;
     private int xPosition,yPosition;
-    public Bonus(int row, int column) {
+    int kind;
+    public Bonus(int kind,int row, int column) {
+        this.kind=kind;
 
         this.xPosition = columnToX(column);
         this.yPosition = rowToY(row);
@@ -20,18 +22,19 @@ public class Bonus extends ImageView {
         setLayoutY(getyPosition());
         setFitWidth(Utill.bonusFitWidth);
         setFitHeight(Utill.bonusFitHeight);
-        setImage();
+        setImage(kind);
     }
 
 
-        private void setImage () {
+        private void setImage (int kind) {
             super.setImage(new Image("\\sample\\download.png"));
         }
-        public int getxPosition(){
-            return columnToX(column);
-        }
+    public int getxPosition() {
+        return xPosition;
+    }
+
     public int getyPosition() {
-        return rowToY(row);
+        return yPosition;
     }
 
         public static int rowToY ( int row){

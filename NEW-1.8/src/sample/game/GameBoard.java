@@ -17,6 +17,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import sample.game.bonus.Bonus;
+import sample.game.bonus.LevelOneBonus;
+import sample.game.bonus.LevelThreeBonus;
+import sample.game.bonus.LevelTwoBonus;
 import sample.game.plant.LevelOnePlant;
 import sample.game.plant.LevelThreePlant;
 import sample.game.plant.LevelTwoPlant;
@@ -41,7 +45,7 @@ public class GameBoard extends Stage {
     private int plantSelectedID;
     private Map<Pair<Integer ,Integer>,Zombie> zombieMap=new HashMap<>();
     private Map<Pair<Integer ,Integer>,Plant> plantMap=new HashMap<>();
-
+    private Bonus bonus;
     public GameBoard(){
         pane=new Pane();
         VBox leftVBox=new VBox();
@@ -100,16 +104,18 @@ public class GameBoard extends Stage {
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                creatPlant(1,3,8);
-                creatZombie(1,1,7);
-                removeZombie(0,19);
-                removePlant(3,19);
-               moveZombie(1,7,2,7);
+                creatBonus(1,3,3);
+                creatBonus(1,3,15);
+//                creatPlant(1,3,8);
+//                creatZombie(1,1,7);
+//                removeZombie(0,19);
+//                removePlant(3,19);
+//               moveZombie(1,7,2,7);
 
 
 
                 TextInputDialog textInputDialog=new TextInputDialog(Utill.defaultName);
-                textInputDialog.setTitle(Utill.newGameTitle);
+                textInputDialog.setTitle(Utill.saveGameTitle);
                 textInputDialog.setHeaderText(Utill.headerDialogInputNewGame);
                 textInputDialog.setContentText(Utill.contexDialogInputNewGame);
 
@@ -336,6 +342,48 @@ public class GameBoard extends Stage {
             public void run() {
 
                 pane.getChildren().remove(plant);
+            }
+        });
+
+    }
+
+    public void creatBonus(int kind,int row,int column){
+        Bonus bonus = null;
+        switch (kind){
+            case 1:
+                bonus=new LevelOneBonus(row,column);
+                break;
+            case 2:
+                bonus=new LevelTwoBonus(row,column);
+                break;
+            case 3:
+                bonus=new LevelThreeBonus(row,column);
+                break;
+        }
+        if(bonus!=null){
+            this.bonus=bonus;
+            final  Bonus tempBonus=bonus;
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    pane.getChildren().add(tempBonus);
+                }
+            });
+
+        }
+    }
+
+    public void removeBonus(int row,int column){
+
+
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                pane.getChildren().remove(bonus);
+                bonus=null;
+
             }
         });
 
