@@ -5,6 +5,7 @@ import com.sun.prism.paint.Color;
 import com.sun.webkit.network.Util;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -92,15 +93,7 @@ public class GameBoard extends Stage {
         lifeLabel = new Label("LIFE LABEL");
         temperatureLabel = new Label("TEMPERATURE LABEL");
         saveButton = new Button("SAVE BUTTON");
-        LevelOneZombie levelOneZombie = new LevelOneZombie(0, 19);
 
-        zombieMap.put(new Pair<>(0, 19), levelOneZombie);
-        pane.getChildren().add(levelOneZombie);
-
-        LevelOnePlant levelOnePlant = new LevelOnePlant(3, 19);
-
-        plantMap.put(new Pair<>(3, 19), levelOnePlant);
-        pane.getChildren().add(levelOnePlant);
 
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -176,7 +169,8 @@ public class GameBoard extends Stage {
         rightVBox.setLayoutX(pane.getLayoutX() + pane.getPrefWidth());
         rightVBox.setLayoutY(0);
         rightVBox.setPrefSize(129, Utill.screenHeight);
-        rightVBox.setAlignment(Pos.CENTER_RIGHT);
+        rightVBox.setAlignment(Pos.TOP_CENTER);
+
 
 
         root.getChildren().addAll(leftVBox, pane, rightVBox);
@@ -381,7 +375,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                timeLabel.setText(string);
+                timeLabel.setText("TIME: "+string);
             }
         });
 
@@ -392,7 +386,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                roundLabel.setText(string);
+                roundLabel.setText("ROUND: "+string);
             }
         });
     }
@@ -402,7 +396,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                temperatureLabel.setText(string);
+                temperatureLabel.setText("LIGHT: "+string);
             }
         });
 
@@ -413,7 +407,7 @@ public class GameBoard extends Stage {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                lifeLabel.setText(string);
+                lifeLabel.setText("REMAINING LIFE: "+string);
 
             }
         });
@@ -424,7 +418,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                scoreLabel.setText(string);
+                scoreLabel.setText("SCORE: "+string);
             }
         });
     }

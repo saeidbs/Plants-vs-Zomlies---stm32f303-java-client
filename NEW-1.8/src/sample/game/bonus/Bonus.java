@@ -8,7 +8,6 @@ import javax.swing.text.Element;
 
 
 public abstract class Bonus extends ImageView {
-    private int row, column;
     private int score = 0;
     private int xPosition,yPosition;
     int kind;
@@ -27,7 +26,7 @@ public abstract class Bonus extends ImageView {
 
 
         private void setImage (int kind) {
-            super.setImage(new Image("\\sample\\download.png"));
+            super.setImage(new Image("\\sample\\game\\bonus\\bonus.png"));
         }
     public int getxPosition() {
         return xPosition;
