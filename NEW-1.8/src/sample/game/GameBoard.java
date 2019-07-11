@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -47,6 +49,11 @@ public class GameBoard extends Stage {
     private Map<Pair<Integer, Integer>, Zombie> zombieMap = new HashMap<>();
     private Map<Pair<Integer, Integer>, Plant> plantMap = new HashMap<>();
     private Bonus bonus;
+    private MotionBlur motionBlur = new MotionBlur();
+    private LevelOnePlant tempLevelOnePlant;
+    private LevelTwoPlant tempLevelTwoPlant;
+    private LevelThreePlant tempLevelThreePlant;
+
 
     public GameBoard() {
         pane = new Pane();
@@ -56,8 +63,10 @@ public class GameBoard extends Stage {
         roundLabel = new Label("ROUND LABEL");
         informationLabel = new Label("informationLabelinformationLabelinformationLabelinformationLabelinformationLabelinformationLabel");
         informationLabel.setWrapText(true);
+
 //        informationLabel.setMaxWidth(Utill.pageSize/6);
 //        informationLabel.setMaxHeight(Utill.pageSize/6);
+
         leftVBox.getChildren().addAll(timeLabel, roundLabel, informationLabel);
         leftVBox.setAlignment(Pos.CENTER);
         leftVBox.setSpacing(2 * Utill.screenUnit);
@@ -65,6 +74,7 @@ public class GameBoard extends Stage {
         leftVBox.setLayoutY(0);
         leftVBox.setPrefSize(Utill.pageSize / 6.5 - 30, Utill.screenHeight);
         leftVBox.setAlignment(Pos.TOP_CENTER);
+        leftVBox.setPadding(new Insets(5*Utill.screenUnit,0,0,0));
 
         Pane root = new Pane();
 
@@ -94,10 +104,26 @@ public class GameBoard extends Stage {
         temperatureLabel = new Label("TEMPERATURE LABEL");
         saveButton = new Button("SAVE BUTTON");
 
+        DropShadow dropShadow = new DropShadow();
+        saveButton.addEventFilter(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                saveButton.setEffect(dropShadow);
+            }
+        });
+
+        saveButton.addEventFilter(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                saveButton.setEffect(null);
+            }
+        });
 
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+
+
                 creatBonus(1, 3, 3);
                 creatBonus(1, 3, 15);
 //                creatPlant(1,3,8);
@@ -125,7 +151,9 @@ public class GameBoard extends Stage {
 
 
         VBox subRightVbox = new VBox();
-        LevelOnePlant tempLevelOnePlant = new LevelOnePlant(0, 0);
+
+
+        tempLevelOnePlant = new LevelOnePlant(0, 0);
         tempLevelOnePlant.setFitHeight(Utill.plantFitHeight * 0.6);
         tempLevelOnePlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -135,7 +163,7 @@ public class GameBoard extends Stage {
             }
         });
 
-        LevelTwoPlant tempLevelTwoPlant = new LevelTwoPlant(0, 0);
+        tempLevelTwoPlant = new LevelTwoPlant(0, 0);
         tempLevelTwoPlant.setFitHeight(Utill.plantFitHeight * 0.6);
         tempLevelTwoPlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -146,7 +174,7 @@ public class GameBoard extends Stage {
         });
 
 
-        LevelThreePlant tempLevelThreePlant = new LevelThreePlant(0, 0);
+        tempLevelThreePlant = new LevelThreePlant(0, 0);
         tempLevelThreePlant.setFitHeight(Utill.plantFitHeight * 0.6);
         tempLevelThreePlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -170,22 +198,11 @@ public class GameBoard extends Stage {
         rightVBox.setLayoutY(0);
         rightVBox.setPrefSize(129, Utill.screenHeight);
         rightVBox.setAlignment(Pos.TOP_CENTER);
-
-
+        rightVBox.setPadding(new Insets(5*Utill.screenUnit,0,0,0));
 
         root.getChildren().addAll(leftVBox, pane, rightVBox);
 
 
-//
-//        BorderPane root = new BorderPane();
-//
-//        root.setLeft(leftVBox);
-//        root.setCenter(gridPane);
-//        root.setRight(rightVBox);
-
-//        SplitPane root=new SplitPane();
-//        root.setDividerPositions(0.2f,0.8f);
-//        root.getItems().addAll(leftVBox,pane,rightVBox);
 
         Scene scene = new Scene(root, Utill.pageSize, Utill.screenHeight);
         this.setScene(scene);
@@ -207,21 +224,25 @@ public class GameBoard extends Stage {
     private void boardGameClick(MouseEvent mouseEvent) {
         switch (plantSelectedID) {
             case 1:
-                if (LevelOnePlant.enable)
+                if (LevelOnePlant.enable) {
                     pane.getChildren().add(new LevelOnePlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
-                LevelOnePlant.enable = false;
+                    LevelOnePlant.enable = false;
+                }
                 break;
             case 2:
-                if (LevelTwoPlant.enable)
+                if (LevelTwoPlant.enable) {
                     pane.getChildren().add(new LevelTwoPlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
-                LevelTwoPlant.enable = false;
+                    LevelTwoPlant.enable = false;
+                }
                 break;
             case 3:
-                if (LevelThreePlant.enable)
+                if (LevelThreePlant.enable) {
                     pane.getChildren().add(new LevelThreePlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
-                LevelThreePlant.enable = false;
+                    LevelThreePlant.enable = false;
+                }
                 break;
         }
+        setPlantEnable(plantSelectedID,0);
 
 
     }
@@ -375,7 +396,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                timeLabel.setText("TIME: "+string);
+                timeLabel.setText("TIME: " + string);
             }
         });
 
@@ -386,7 +407,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                roundLabel.setText("ROUND: "+string);
+                roundLabel.setText("ROUND: " + string);
             }
         });
     }
@@ -396,7 +417,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                temperatureLabel.setText("LIGHT: "+string);
+                temperatureLabel.setText("LIGHT: " + string);
             }
         });
 
@@ -407,7 +428,7 @@ public class GameBoard extends Stage {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                lifeLabel.setText("REMAINING LIFE: "+string);
+                lifeLabel.setText("REMAINING LIFE: " + string);
 
             }
         });
@@ -418,7 +439,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                scoreLabel.setText("SCORE: "+string);
+                scoreLabel.setText("SCORE: " + string);
             }
         });
     }
@@ -433,9 +454,45 @@ public class GameBoard extends Stage {
         });
     }
 
+    public void setPlantEnable(int kind, int enable) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                if (kind == 1) {
+                    if (enable == 1) {
+                        tempLevelOnePlant.setEffect(null);
+                        LevelOnePlant.enable=true;
+                    }
+                    else if (enable == 0) {
+                        tempLevelOnePlant.setEffect(motionBlur);
+                        LevelOnePlant.enable=false;
+                    }
+                }else if (kind == 2) {
+                    if (enable == 1) {
+                        tempLevelTwoPlant.setEffect(null);
+                        LevelTwoPlant.enable=true;
+                    }
+                    else if (enable == 0) {
+                        tempLevelTwoPlant.setEffect(motionBlur);
+                        LevelTwoPlant.enable=false;
+                    }
+                } else if (kind == 3) {
+                    if (enable == 1) {
+                        tempLevelThreePlant.setEffect(null);
+                        LevelThreePlant.enable=true;
+                    }
+                    else if (enable == 0) {
+                        tempLevelThreePlant.setEffect(motionBlur);
+                        LevelThreePlant.enable=false;
+                    }
+                }
+            }
+        });
+    }
+
 
     private void saveGame(String string) {
-
 
     }
 

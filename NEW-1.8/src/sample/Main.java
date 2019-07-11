@@ -79,6 +79,9 @@ public class Main extends Application {
                                 case "ls":
                                     controller.getGameBoard().setLifeLabel(array[0]);
                                     break;
+                                case "en":
+                                    controller.getGameBoard().setPlantEnable(getInt(array[0]),getInt(array[1]));
+                                    break;
                             }
 
 
