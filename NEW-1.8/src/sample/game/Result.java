@@ -7,11 +7,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import sample.utills.Utill;
+import static sample.utills.Utill.controller;
 
 
 public class Result extends Stage {
@@ -33,6 +33,9 @@ public class Result extends Stage {
             public void handle(ActionEvent event) {
                // Utill.controller.showGameBoard();
                 Result.this.close();
+                controller.getGameBoard().close();
+                controller.setGameBoard();
+                controller.getGameBoard().show();
             }
         });
 
@@ -58,13 +61,21 @@ public class Result extends Stage {
 
         Pane pane = new Pane();
         pane.getChildren().addAll(vBox);
-        pane.setPrefSize(100 * Utill.screenUnit, 100 * Utill.screenUnit);
+      //  pane.setPrefSize(100 * Utill.screenUnit, 100 * Utill.screenUnit);
+        pane.setBackground(new Background(new BackgroundImage(
+                new Image("\\sample\\menu.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(100*Utill.screenUnit, 100*Utill.screenUnit, true, true, true, true))));
+
 
 
         Scene scene = new Scene(pane, 100 * Utill.screenUnit, 100 * Utill.screenUnit);
         this.setTitle("Finish");
         this.setResizable(false);
         this.setScene(scene);
+        
 
     }
 

@@ -219,6 +219,7 @@ public class GameBoard extends Stage {
         Scene scene = new Scene(root, Utill.pageSize, Utill.screenHeight);
         this.setScene(scene);
         this.setResizable(false);
+        this.getIcons().add(0,new Image("\\sample\\icon.png"));
     }
 
 

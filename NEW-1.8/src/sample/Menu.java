@@ -169,7 +169,7 @@ public class Menu extends Stage {
         this.setTitle(Utill.menuTitle);
         this.setResizable(false);
         this.setScene(scene);
-
+        this.getIcons().add(0,new Image("\\sample\\icon.png"));
 
     }
 }

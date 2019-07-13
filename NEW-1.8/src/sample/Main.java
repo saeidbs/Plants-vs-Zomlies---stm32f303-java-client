@@ -5,10 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Control;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import sample.utills.Utill;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,7 +27,24 @@ public class Main extends Application {
 //        primaryStage.setTitle("Hello World");
 //        primaryStage.setScene(new Scene(root, 300, 275));
 //        primaryStage.show();
+        //primaryStage.getIcons().add(0,new Image("\\sample\\icon.jpg"));
         controller = new Controller();
+
+        TextInputDialog textInputDialog = new TextInputDialog("COM4");
+
+        textInputDialog.setTitle("CONFIGURE UART");
+        textInputDialog.setHeaderText("Enter Your Uart port");
+        textInputDialog.setContentText("PORT:");
+
+        ((Stage)textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
+
+
+        Optional<String> result = textInputDialog.showAndWait();
+
+        result.ifPresent(name -> {
+            controller.setUart(name);
+        });
+
         controller.showMenu();
 
         BufferedReader bufferedReader = controller.getUart().getReader();
