@@ -7,7 +7,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import sample.utills.Utill;
@@ -16,19 +18,34 @@ import static sample.utills.Utill.controller;
 
 public class Result extends Stage {
 
-    private Label result;
-    private Label score;
-    private Button newGame;
-    private Button exit;
+    
+    private Label resultLabel;
+    private Label scoreLabel;
+    private Button newGameButton;
+    private Button exitButton;
 
     private Result() {
-        result = new Label("Result");
-        score = new Label("Score:");
-        newGame = new Button("NEW GAME");
-        exit = new Button("EXIT GAME");
+        resultLabel = new Label("Result");
+        scoreLabel = new Label("Score:");
+        newGameButton = new Button("NEW GAME");
+        exitButton = new Button("EXIT GAME");
 
+        DropShadow dropShadow = new DropShadow();
+        newGameButton.addEventFilter(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                newGameButton.setEffect(dropShadow);
+            }
+        });
 
-        newGame.setOnAction(new EventHandler<ActionEvent>() {
+        newGameButton.addEventFilter(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                newGameButton.setEffect(null);
+            }
+        });
+
+        newGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                // Utill.controller.showGameBoard();
@@ -39,17 +56,31 @@ public class Result extends Stage {
             }
         });
 
+        exitButton.addEventFilter(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                exitButton.setEffect(dropShadow);
+            }
+        });
+
+        exitButton.addEventFilter(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                exitButton.setEffect(null);
+            }
+        });
+
 
 
 
 
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(newGame, exit);
+        hBox.getChildren().addAll(newGameButton, exitButton);
         hBox.setSpacing(3* Utill.screenUnit);
         hBox.setAlignment(Pos.CENTER);
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(result, score,hBox);
+        vBox.getChildren().addAll(resultLabel, scoreLabel,hBox);
         vBox.setSpacing(5 * Utill.screenUnit);
         vBox.setAlignment(Pos.CENTER);
         vBox.setLayoutX(100 * Utill.screenUnit / 3-5);
@@ -82,11 +113,11 @@ public class Result extends Stage {
     public Result(Boolean bool,int score){
         this();
         if (bool)
-            result.setText("YOU WIN!!!!!!!");
+            resultLabel.setText("YOU WIN!!!!!!!");
         else
-            result.setText("GAME OVER");
+            resultLabel.setText("GAME OVER");
 
-        this.score.setText("YOUR SCORE IS: "+score);
+        this.scoreLabel.setText("YOUR SCORE IS: "+score);
 
     }
 }

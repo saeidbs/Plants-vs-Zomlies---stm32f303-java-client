@@ -36,6 +36,7 @@ public class Main extends Application {
         textInputDialog.setHeaderText("Enter Your Uart port");
         textInputDialog.setContentText("PORT:");
 
+
         ((Stage)textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
 
 
