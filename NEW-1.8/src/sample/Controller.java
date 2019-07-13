@@ -8,8 +8,8 @@ public class Controller {
 
 
 private Menu menu=new Menu();
-private GameBoard gameBoard=new GameBoard();
 private Uart uart=new Uart("COM4");
+private GameBoard gameBoard=new GameBoard(uart);
 
 
 public void showMenu(){

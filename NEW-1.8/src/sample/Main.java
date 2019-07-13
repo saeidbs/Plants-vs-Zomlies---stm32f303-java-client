@@ -34,13 +34,16 @@ public class Main extends Application {
 
                     if (bufferedReader.ready()) {
                         String string = bufferedReader.readLine();
-                        System.out.println(string);
+
+                        System.out.println("micro:"+string+"********");
+                        controller.getGameBoard().setInformationText(string);
+
                         String dataString=string.substring(string.indexOf(":")+1);
                         String[] array = {};
 
                         if(!string.isEmpty())
                             array=dataString.split(",");
-
+///*
                             switch (string.substring(0,string.indexOf(":"))){
                                 case "pc":
                                     controller.getGameBoard().creatPlant(getInt(array[0]), getInt(array[1]), getInt(array[2]));
@@ -79,19 +82,19 @@ public class Main extends Application {
                                 case "ls":
                                     controller.getGameBoard().setLifeLabel(array[0]);
                                     break;
-                                case "en":
+                                case "pe":
                                     controller.getGameBoard().setPlantEnable(getInt(array[0]),getInt(array[1]));
                                     break;
                             }
 
 
-
+//*/
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }, 0, 50);
+        }, 0, 10);
 
 
     }

@@ -1,13 +1,16 @@
 package sample.game.bonus;
 
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import sample.utills.Utill;
 
 import javax.swing.text.Element;
 
 
 public abstract class Bonus extends ImageView {
+    public static boolean clicked=false;
     private int score = 0;
     private int xPosition,yPosition;
     int kind;
@@ -22,6 +25,15 @@ public abstract class Bonus extends ImageView {
         setFitWidth(Utill.bonusFitWidth);
         setFitHeight(Utill.bonusFitHeight);
         setImage(kind);
+
+
+        setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                clicked=true;
+
+            }
+        });
     }
 
 
