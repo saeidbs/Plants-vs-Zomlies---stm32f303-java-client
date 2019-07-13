@@ -5,10 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Control;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import sample.utills.Utill;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,7 +27,24 @@ public class Main extends Application {
 //        primaryStage.setTitle("Hello World");
 //        primaryStage.setScene(new Scene(root, 300, 275));
 //        primaryStage.show();
+        //primaryStage.getIcons().add(0,new Image("\\sample\\icon.jpg"));
         controller = new Controller();
+
+        TextInputDialog textInputDialog = new TextInputDialog("COM4");
+
+        textInputDialog.setTitle("CONFIGURE UART");
+        textInputDialog.setHeaderText("Enter Your Uart port");
+        textInputDialog.setContentText("PORT:");
+
+        ((Stage)textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
+
+
+        Optional<String> result = textInputDialog.showAndWait();
+
+        result.ifPresent(name -> {
+            controller.setUart(name);
+        });
+
         controller.showMenu();
 
         BufferedReader bufferedReader = controller.getUart().getReader();
@@ -34,13 +55,16 @@ public class Main extends Application {
 
                     if (bufferedReader.ready()) {
                         String string = bufferedReader.readLine();
-                        System.out.println(string);
+
+                        System.out.println("micro:"+string+"********");
+                        controller.getGameBoard().setInformationText(string);
+
                         String dataString=string.substring(string.indexOf(":")+1);
                         String[] array = {};
 
                         if(!string.isEmpty())
                             array=dataString.split(",");
-
+///*
                             switch (string.substring(0,string.indexOf(":"))){
                                 case "pc":
                                     controller.getGameBoard().creatPlant(getInt(array[0]), getInt(array[1]), getInt(array[2]));
@@ -79,16 +103,19 @@ public class Main extends Application {
                                 case "ls":
                                     controller.getGameBoard().setLifeLabel(array[0]);
                                     break;
+                                case "pe":
+                                    controller.getGameBoard().setPlantEnable(getInt(array[0]),getInt(array[1]));
+                                    break;
                             }
 
 
-
+//*/
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }, 0, 50);
+        }, 0, 10);
 
 
     }

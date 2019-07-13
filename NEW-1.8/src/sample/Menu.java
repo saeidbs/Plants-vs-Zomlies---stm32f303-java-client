@@ -6,9 +6,11 @@ import com.sun.webkit.network.Util;
 import javafx.animation.PathTransition;
 import javafx.geometry.HPos;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import sample.game.GameBoard;
@@ -21,8 +23,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.util.Optional;
@@ -32,7 +32,7 @@ public class Menu extends Stage {
     private Button newGameButton;
     private Button loadGameButton;
     private Button aboutGameButton;
-
+    private DropShadow dropShadow = new DropShadow();
     private void aboutGameListener(){
 
         Alert alert=new Alert(Alert.AlertType.INFORMATION, Utill.aboutGameMessage);
@@ -73,6 +73,14 @@ public class Menu extends Stage {
         gridPane.setVgap(10*Utill.screenUnit);
         gridPane.setHgap(1* Utill.screenUnit);
 
+        gridPane.setBackground(new Background(new BackgroundImage(
+                new Image("\\sample\\menu.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(100*Utill.screenUnit, 100*Utill.screenUnit, true, true, true, true))));
+
+
         Label welcomeLabel=new Label(Utill.menuWelcome);
         GridPane.setHalignment(welcomeLabel, HPos.CENTER);
         gridPane.add(welcomeLabel,1,0);
@@ -84,13 +92,48 @@ public class Menu extends Stage {
                 aboutGameListener();
             }
         });
+        aboutGameButton.addEventFilter(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                aboutGameButton.setEffect(dropShadow);
+            }
+        });
+        aboutGameButton.addEventFilter(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                aboutGameButton.setEffect(null);
+            }
+        });
+
+
+
+
         newGameButton =new Button(Utill.newGameTitle);
+
         newGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 newGameButtonListener();
             }
         });
+        newGameButton.addEventFilter(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                newGameButton.setEffect(dropShadow);
+            }
+        });
+        newGameButton.addEventFilter(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                newGameButton.setEffect(null);
+            }
+        });
+
+
+
+
+
+
         loadGameButton=new Button(Utill.loadGameTitle);
         loadGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -98,6 +141,21 @@ public class Menu extends Stage {
                 loadGameButtonListener();
             }
         });
+        loadGameButton.addEventFilter(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                loadGameButton.setEffect(dropShadow);
+            }
+        });
+        loadGameButton.addEventFilter(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                loadGameButton.setEffect(null);
+            }
+        });
+
+
+
 
         VBox vBox=new VBox();
         vBox.getChildren().addAll(newGameButton,loadGameButton,aboutGameButton);
@@ -111,7 +169,7 @@ public class Menu extends Stage {
         this.setTitle(Utill.menuTitle);
         this.setResizable(false);
         this.setScene(scene);
-
+        this.getIcons().add(0,new Image("\\sample\\icon.png"));
 
     }
 }

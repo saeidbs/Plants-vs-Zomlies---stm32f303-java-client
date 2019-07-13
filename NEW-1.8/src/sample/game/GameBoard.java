@@ -1,22 +1,20 @@
 package sample.game;
 
-import com.sun.javafx.util.Utils;
-import com.sun.prism.paint.Color;
-import com.sun.webkit.network.Util;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import sample.Uart;
 import sample.game.bonus.Bonus;
 import sample.game.bonus.LevelOneBonus;
 import sample.game.bonus.LevelThreeBonus;
@@ -28,6 +26,8 @@ import sample.game.plant.Plant;
 import sample.game.zombie.*;
 import sample.utills.Utill;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -38,32 +38,56 @@ public class GameBoard extends Stage {
     private Label roundLabel;
     private Label scoreLabel;
     private Label lifeLabel;
-    private Label informationLabel;
+    private Label informationLable;
+    private Text informationText;
     private Label temperatureLabel;
     private Button saveButton;
     private static Pane pane;
-    private int plantSelectedID;
+    private int plantSelectedID = 1;
     private Map<Pair<Integer, Integer>, Zombie> zombieMap = new HashMap<>();
     private Map<Pair<Integer, Integer>, Plant> plantMap = new HashMap<>();
     private Bonus bonus;
+    private MotionBlur motionBlur = new MotionBlur();
+    private LevelOnePlant tempLevelOnePlant;
+    private LevelTwoPlant tempLevelTwoPlant;
+    private LevelThreePlant tempLevelThreePlant;
+    private Uart uart;
+    private BufferedWriter bufferedWriter;
 
-    public GameBoard() {
+
+    private GameBoard() {
+
         pane = new Pane();
         VBox leftVBox = new VBox();
 
         timeLabel = new Label("TIME LABEL");
         roundLabel = new Label("ROUND LABEL");
-        informationLabel = new Label("informationLabelinformationLabelinformationLabelinformationLabelinformationLabelinformationLabel");
-        informationLabel.setWrapText(true);
-//        informationLabel.setMaxWidth(Utill.pageSize/6);
-//        informationLabel.setMaxHeight(Utill.pageSize/6);
-        leftVBox.getChildren().addAll(timeLabel, roundLabel, informationLabel);
+        informationText = new Text("informationLabelinformationLabelinformationLabelinformationLabelinformationLabelinformationLabel\n");
+        //  informationText.prefHeight(Utill.screenHeight);
+//        for (int i=0;i<7;i++){
+//            informationText.setText(informationText.getText()+informationText.getText());
+//        }
+        //  informationText.setWrapText(true);
+
+//        informationText.setMaxWidth(Utill.pageSize/6);
+//        informationText.setMaxHeight(Utill.pageSize/6);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setContent(informationText);
+
+        informationLable = new Label("uart receive:");
+
+        leftVBox.getChildren().addAll(timeLabel, roundLabel, informationLable, scrollPane);
         leftVBox.setAlignment(Pos.CENTER);
         leftVBox.setSpacing(2 * Utill.screenUnit);
         leftVBox.setLayoutX(0);
         leftVBox.setLayoutY(0);
         leftVBox.setPrefSize(Utill.pageSize / 6.5 - 30, Utill.screenHeight);
         leftVBox.setAlignment(Pos.TOP_CENTER);
+        leftVBox.setPadding(new Insets(5 * Utill.screenUnit, 0, 0, 0));
+
 
         Pane root = new Pane();
 
@@ -92,19 +116,27 @@ public class GameBoard extends Stage {
         lifeLabel = new Label("LIFE LABEL");
         temperatureLabel = new Label("TEMPERATURE LABEL");
         saveButton = new Button("SAVE BUTTON");
-        LevelOneZombie levelOneZombie = new LevelOneZombie(0, 19);
 
-        zombieMap.put(new Pair<>(0, 19), levelOneZombie);
-        pane.getChildren().add(levelOneZombie);
+        DropShadow dropShadow = new DropShadow();
+        saveButton.addEventFilter(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                saveButton.setEffect(dropShadow);
+            }
+        });
 
-        LevelOnePlant levelOnePlant = new LevelOnePlant(3, 19);
-
-        plantMap.put(new Pair<>(3, 19), levelOnePlant);
-        pane.getChildren().add(levelOnePlant);
+        saveButton.addEventFilter(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                saveButton.setEffect(null);
+            }
+        });
 
         saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+
+                new Result(true,5000).show();
                 creatBonus(1, 3, 3);
                 creatBonus(1, 3, 15);
 //                creatPlant(1,3,8);
@@ -132,7 +164,9 @@ public class GameBoard extends Stage {
 
 
         VBox subRightVbox = new VBox();
-        LevelOnePlant tempLevelOnePlant = new LevelOnePlant(0, 0);
+
+
+        tempLevelOnePlant = new LevelOnePlant(0, 0);
         tempLevelOnePlant.setFitHeight(Utill.plantFitHeight * 0.6);
         tempLevelOnePlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -142,7 +176,7 @@ public class GameBoard extends Stage {
             }
         });
 
-        LevelTwoPlant tempLevelTwoPlant = new LevelTwoPlant(0, 0);
+        tempLevelTwoPlant = new LevelTwoPlant(0, 0);
         tempLevelTwoPlant.setFitHeight(Utill.plantFitHeight * 0.6);
         tempLevelTwoPlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -153,7 +187,7 @@ public class GameBoard extends Stage {
         });
 
 
-        LevelThreePlant tempLevelThreePlant = new LevelThreePlant(0, 0);
+        tempLevelThreePlant = new LevelThreePlant(0, 0);
         tempLevelThreePlant.setFitHeight(Utill.plantFitHeight * 0.6);
         tempLevelThreePlant.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -176,26 +210,16 @@ public class GameBoard extends Stage {
         rightVBox.setLayoutX(pane.getLayoutX() + pane.getPrefWidth());
         rightVBox.setLayoutY(0);
         rightVBox.setPrefSize(129, Utill.screenHeight);
-        rightVBox.setAlignment(Pos.CENTER_RIGHT);
-
+        rightVBox.setAlignment(Pos.TOP_CENTER);
+        rightVBox.setPadding(new Insets(5 * Utill.screenUnit, 0, 0, 0));
 
         root.getChildren().addAll(leftVBox, pane, rightVBox);
 
 
-//
-//        BorderPane root = new BorderPane();
-//
-//        root.setLeft(leftVBox);
-//        root.setCenter(gridPane);
-//        root.setRight(rightVBox);
-
-//        SplitPane root=new SplitPane();
-//        root.setDividerPositions(0.2f,0.8f);
-//        root.getItems().addAll(leftVBox,pane,rightVBox);
-
         Scene scene = new Scene(root, Utill.pageSize, Utill.screenHeight);
         this.setScene(scene);
         this.setResizable(false);
+        this.getIcons().add(0,new Image("\\sample\\icon.png"));
     }
 
 
@@ -211,26 +235,53 @@ public class GameBoard extends Stage {
     }
 
     private void boardGameClick(MouseEvent mouseEvent) {
-        switch (plantSelectedID) {
-            case 1:
-                if (LevelOnePlant.enable)
-                    pane.getChildren().add(new LevelOnePlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
-                LevelOnePlant.enable = false;
-                break;
-            case 2:
-                if (LevelTwoPlant.enable)
-                    pane.getChildren().add(new LevelTwoPlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
-                LevelTwoPlant.enable = false;
-                break;
-            case 3:
-                if (LevelThreePlant.enable)
-                    pane.getChildren().add(new LevelThreePlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
-                LevelThreePlant.enable = false;
-                break;
+        try {
+
+            if (Bonus.clicked) {
+                Bonus.clicked = false;
+                //  bufferedWriter.write("");
+
+
+            } else {
+               // System.out.println("kiram to masoud ");
+//                bufferedWriter.write("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
+//                bufferedWriter.flush();
+                uart.addCharacter("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
+            //  uart.send("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
+                System.out.println("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
+             //   System.out.println("kiram dobare to masoud");
+            }
+        } catch (Exception e) {
+
         }
 
-
     }
+
+//    private void boardGameClick(MouseEvent mouseEvent) {
+//        switch (plantSelectedID) {
+//            case 1:
+//                if (LevelOnePlant.enable) {
+//                    pane.getChildren().add(new LevelOnePlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
+//                    LevelOnePlant.enable = false;
+//                }
+//                break;
+//            case 2:
+//                if (LevelTwoPlant.enable) {
+//                    pane.getChildren().add(new LevelTwoPlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
+//                    LevelTwoPlant.enable = false;
+//                }
+//                break;
+//            case 3:
+//                if (LevelThreePlant.enable) {
+//                    pane.getChildren().add(new LevelThreePlant(Plant.ytoRow((int) mouseEvent.getY()), Plant.xtoColumn((int) mouseEvent.getX())));
+//                    LevelThreePlant.enable = false;
+//                }
+//                break;
+//        }
+//        setPlantEnable(plantSelectedID,0);
+//
+//
+//    }
 
 
     public void creatZombie(int kind, int row, int column) {
@@ -381,7 +432,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                timeLabel.setText(string);
+                timeLabel.setText("TIME: " + string);
             }
         });
 
@@ -392,7 +443,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                roundLabel.setText(string);
+                roundLabel.setText("ROUND: " + string);
             }
         });
     }
@@ -402,7 +453,7 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                temperatureLabel.setText(string);
+                temperatureLabel.setText("LIGHT: " + string);
             }
         });
 
@@ -413,7 +464,7 @@ public class GameBoard extends Stage {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                lifeLabel.setText(string);
+                lifeLabel.setText("REMAINING LIFE: " + string);
 
             }
         });
@@ -424,17 +475,50 @@ public class GameBoard extends Stage {
             @Override
             public void run() {
 
-                scoreLabel.setText(string);
+                scoreLabel.setText("SCORE: " + string);
             }
         });
     }
 
-    public void setInformationLabel(String string) {
+    public void setInformationText(String string) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                informationLabel.setText(string);
+                informationText.setText(string + "\n" + informationText.toString());
+            }
+        });
+    }
 
+    public void setPlantEnable(int kind, int enable) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                if (kind == 1) {
+                    if (enable == 1) {
+                        tempLevelOnePlant.setEffect(null);
+                        LevelOnePlant.enable = true;
+                    } else if (enable == 0) {
+                        tempLevelOnePlant.setEffect(motionBlur);
+                        LevelOnePlant.enable = false;
+                    }
+                } else if (kind == 2) {
+                    if (enable == 1) {
+                        tempLevelTwoPlant.setEffect(null);
+                        LevelTwoPlant.enable = true;
+                    } else if (enable == 0) {
+                        tempLevelTwoPlant.setEffect(motionBlur);
+                        LevelTwoPlant.enable = false;
+                    }
+                } else if (kind == 3) {
+                    if (enable == 1) {
+                        tempLevelThreePlant.setEffect(null);
+                        LevelThreePlant.enable = true;
+                    } else if (enable == 0) {
+                        tempLevelThreePlant.setEffect(motionBlur);
+                        LevelThreePlant.enable = false;
+                    }
+                }
             }
         });
     }
@@ -442,7 +526,13 @@ public class GameBoard extends Stage {
 
     private void saveGame(String string) {
 
+    }
 
+    public GameBoard(Uart uart) {
+        this();
+        this.uart = uart;
+        // TODO: 7/13/2019 hazf she
+       // bufferedWriter = uart.getWriter();
     }
 
 }

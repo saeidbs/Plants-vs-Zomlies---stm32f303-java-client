@@ -5,15 +5,24 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Uart {
     private Scanner scanner;
     private OutputStream out = null;
+    private static Timer timer=new Timer();
+    private Queue<Character>queue=new LinkedList();
     InputStream in;
 
     public Uart(String portName){
         connect(portName);
+       timer.schedule(new TimerTask() {
+           @Override
+           public void run() {
+            if (!queue.isEmpty())
+                send(queue.poll()+"");
+           }
+       },0,10);
     }
 
     public void send(String text) {
@@ -72,6 +81,15 @@ public class Uart {
         return null;
 
     }
+    public BufferedWriter getWriter(){
+        return new BufferedWriter(new OutputStreamWriter(out));
+    }
+    public void addCharacter(String string){
+        char[] characters=string.toCharArray();
+        for (int i=0;i<characters.length;i++)
+            queue.add(characters[i]);
+    }
+
 
 //    public static void main(String[] args) throws IOException {
 //        String string;
