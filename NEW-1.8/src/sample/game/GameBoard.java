@@ -540,7 +540,7 @@ public class GameBoard extends Stage {
         this();
         this.uart = uart;
         // TODO: 7/13/2019 hazf she
-       bufferedWriter = uart.getWriter();
+     //  bufferedWriter = uart.getWriter();
     }
 
 }

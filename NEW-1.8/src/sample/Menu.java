@@ -1,8 +1,6 @@
 package sample;
 
 
-import com.sun.webkit.network.Util;
-import javafx.animation.PathTransition;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.scene.control.*;
@@ -11,9 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
-import javafx.util.Duration;
-import sample.game.GameBoard;
+import sample.game.SaveLoadFile;
 import sample.utills.Utill;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static sample.utills.Utill.controller;
 
 public class Menu extends Stage {
@@ -31,6 +29,7 @@ public class Menu extends Stage {
     private Button aboutGameButton;
     private DropShadow dropShadow = new DropShadow();
     private Alert alert;
+    private String load="";
 
 
     private void aboutGameListener() {
@@ -78,7 +77,31 @@ public class Menu extends Stage {
     }
 
     private void loadGameButtonListener() {
-        aboutGameButton.fire();
+
+        TextInputDialog textInputDialog = new TextInputDialog("SaveName");
+
+        textInputDialog.setTitle("Load Game");
+        textInputDialog.setHeaderText("Enter Your Save name");
+        textInputDialog.setContentText("Name:");
+
+        ((Stage)textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
+
+        ImageView imageView= new ImageView("\\sample\\alert-graphic.png");
+        imageView.setFitWidth(20*Utill.screenUnit);
+        imageView.setFitHeight(20*Utill.screenUnit);
+        textInputDialog.setGraphic(imageView);
+        Optional<String> result = textInputDialog.showAndWait();
+
+        result.ifPresent(name -> {
+           load=SaveLoadFile.load(name);
+            System.out.println(load);
+
+        });
+
+//        if (!SaveLoadFile.load("C").equals(""))
+//            System.out.println("yes");
+//        else System.out.println("wow");
+      //  aboutGameButton.fire();
 //       Utill.controller.showGameBoard();
 //        this.close();
     }
