@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -147,9 +148,16 @@ public class GameBoard extends Stage {
 
 
                 TextInputDialog textInputDialog = new TextInputDialog(Utill.defaultName);
+                ((Stage)textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
+
                 textInputDialog.setTitle(Utill.saveGameTitle);
                 textInputDialog.setHeaderText(Utill.headerDialogInputNewGame);
                 textInputDialog.setContentText(Utill.contexDialogInputNewGame);
+                ImageView imageView= new ImageView("\\sample\\alert-graphic.png");
+                imageView.setFitWidth(20*Utill.screenUnit);
+                imageView.setFitHeight(20*Utill.screenUnit);
+                textInputDialog.setGraphic(imageView);
+
 
                 Optional<String> result = textInputDialog.showAndWait();
 

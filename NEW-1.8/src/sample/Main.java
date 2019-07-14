@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import sample.utills.Utill;
 
@@ -36,10 +37,12 @@ public class Main extends Application {
         textInputDialog.setHeaderText("Enter Your Uart port");
         textInputDialog.setContentText("PORT:");
 
-
         ((Stage)textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
 
-
+        ImageView imageView= new ImageView("\\sample\\alert-graphic.png");
+        imageView.setFitWidth(20*Utill.screenUnit);
+        imageView.setFitHeight(20*Utill.screenUnit);
+        textInputDialog.setGraphic(imageView);
         Optional<String> result = textInputDialog.showAndWait();
 
         result.ifPresent(name -> {

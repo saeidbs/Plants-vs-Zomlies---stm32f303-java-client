@@ -38,6 +38,14 @@ public class Menu extends Stage {
         Alert alert=new Alert(Alert.AlertType.INFORMATION, Utill.aboutGameMessage);
         alert.setTitle(Utill.aboutGameTitle);
         alert.setHeaderText(Utill.aboutGameHeader);
+         //alert.setHeaderText(null);
+       ImageView imageView= new ImageView("\\sample\\alert-graphic.png");
+        imageView.setFitWidth(20*Utill.screenUnit);
+        imageView.setFitHeight(20*Utill.screenUnit);
+        alert.setGraphic(imageView);
+
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
+
 
         alert.show();
     }

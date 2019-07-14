@@ -18,7 +18,7 @@ import static sample.utills.Utill.controller;
 
 public class Result extends Stage {
 
-    
+
     private Label resultLabel;
     private Label scoreLabel;
     private Button newGameButton;
@@ -53,6 +53,15 @@ public class Result extends Stage {
                 controller.getGameBoard().close();
                 controller.setGameBoard();
                 controller.getGameBoard().show();
+            }
+        });
+
+        exitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Result.this.close();
+                controller.getGameBoard().close();
+                System.exit(0);
             }
         });
 
