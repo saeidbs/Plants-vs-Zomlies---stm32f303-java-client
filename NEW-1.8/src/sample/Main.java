@@ -9,6 +9,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import sample.game.SaveLoadFile;
 import sample.utills.Utill;
 
 import java.io.BufferedReader;
@@ -47,12 +48,17 @@ public class Main extends Application {
 
         result.ifPresent(name -> {
             controller.setUart(name);
+            controller.setGameBoard();
+
         });
 
         controller.showMenu();
 
         BufferedReader bufferedReader = controller.getUart().getReader();
+
+
         timer.schedule(new TimerTask() {
+             String state="menu";
             @Override
             public void run() {
                 try {
@@ -110,6 +116,28 @@ public class Main extends Application {
                                 case "pe":
                                     controller.getGameBoard().setPlantEnable(getInt(array[0]),getInt(array[1]));
                                     break;
+                                case "save":
+                                    SaveLoadFile.save(dataString);
+                                    break;
+                                case "state":
+                                    if (!array[0].equals(state)){
+                                        switch (array[0]){
+                                            case "menu":
+                                                controller.getMenu().aboutGameButtonFire(false);
+                                                break;
+                                            case "about":
+                                                controller.getMenu().aboutGameButtonFire(true);
+                                                break;
+                                            case "game":
+                                                controller.getMenu().newGameButtonFire();
+                                                break;
+
+                                        }
+
+
+                                        state=array[0];
+                                    }
+
                             }
 
 

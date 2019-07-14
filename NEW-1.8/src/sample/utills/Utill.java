@@ -10,6 +10,9 @@ public abstract class Utill {
 
 
 
+    public static final int stateMenu=0;
+    public static final int stateAbout=1;
+    public static final int stateNewGame=2;
 
     public static final int screenUnit=4;
     public static final int pageSize=250 * screenUnit*15/10;

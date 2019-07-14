@@ -254,7 +254,7 @@ public class GameBoard extends Stage {
                // System.out.println("kiram to masoud ");
 //                bufferedWriter.write("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
 //                bufferedWriter.flush();
-                uart.addCharacter("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
+                uart.addCharacter("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX()));
             //  uart.send("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
                 System.out.println("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
              //   System.out.println("kiram dobare to masoud");
@@ -540,7 +540,7 @@ public class GameBoard extends Stage {
         this();
         this.uart = uart;
         // TODO: 7/13/2019 hazf she
-       // bufferedWriter = uart.getWriter();
+       bufferedWriter = uart.getWriter();
     }
 
 }
