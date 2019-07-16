@@ -13,7 +13,7 @@ public class SaveLoadFile {
         // System.out.println("ermwk;g;oikwrglmi;wremg3w4'omikgikm'3w4gmk3w4mkgkmlw4    "+string);
         String name = string.substring(0, string.indexOf(","));
 
-        string = "s:" + string.substring(name.length());
+        string = "l:" + string.substring(name.length()+1);
         File file = new File("save\\" + name + ".txt");
         file.createNewFile();
 
@@ -41,6 +41,8 @@ public class SaveLoadFile {
                // System.out.println(line);
             }
 
+            Utill.controller.getUart().addCharacter(load);
+
             // Always close files.
             bufferedReader.close();
         } catch (FileNotFoundException ex) {
@@ -49,7 +51,10 @@ public class SaveLoadFile {
             alert.setTitle("ERROR");
             alert.setHeaderText("File Not Found");
             ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(0, new Image("\\sample\\icon.png"));
-            alert.show();
+
+            alert.showAndWait();
+            Utill.controller.getMenu().loadGameButtonFire();
+
             System.out.println(
                     "Unable to open file '" +
                             name + "'");

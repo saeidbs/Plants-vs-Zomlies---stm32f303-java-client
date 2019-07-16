@@ -146,6 +146,9 @@ public class Main extends Application {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                catch (Exception e){
+
+                }
             }
         }, 0, 10);
 

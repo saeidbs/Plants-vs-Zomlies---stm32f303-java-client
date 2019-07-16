@@ -38,7 +38,20 @@ public abstract class Bonus extends ImageView {
 
 
         private void setImage (int kind) {
-            super.setImage(new Image("\\sample\\game\\bonus\\bonus.png"));
+        String path="";
+        switch (kind){
+            case 1:
+                path="\\sample\\game\\bonus\\LevelOnebonus.png";
+                break;
+            case 2:
+                path="\\sample\\game\\bonus\\LevelTwobonus.png";
+                break;
+            case 3:
+                path="\\sample\\game\\bonus\\LevelThreebonus.png";
+                break;
+        }
+                super.setImage(new Image(path));
+
         }
     public int getxPosition() {
         return xPosition;

@@ -94,14 +94,14 @@ public class GameBoard extends Stage {
 
         pane.setLayoutX(leftVBox.getPrefWidth());
         pane.setLayoutY(0);
-        pane.setPrefSize(Utill.zombieFitWidth * 20, Utill.screenHeight);
+        pane.setPrefSize(Utill.zombieFitWidth * 20, Utill.screenHeight+20);
 
         pane.setBackground(new Background(new BackgroundImage(
                 new Image("\\sample\\Wiki-background.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                new BackgroundSize(Utill.pageSize / 1.25 - 30, Utill.screenHeight, true, true, true, true))));
+                new BackgroundSize(Utill.pageSize / 1.25 - 30, Utill.screenHeight+20, true, true, true, true))));
 
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -139,7 +139,8 @@ public class GameBoard extends Stage {
 
                 new Result(true,5000).show();
                 creatBonus(1, 3, 3);
-                creatBonus(1, 3, 15);
+                creatBonus(2, 3, 15);
+                creatBonus(3, 2, 15);
 //                creatPlant(1,3,8);
 //                creatZombie(1,1,7);
 //                removeZombie(0,19);
@@ -223,8 +224,15 @@ public class GameBoard extends Stage {
 
         root.getChildren().addAll(leftVBox, pane, rightVBox);
 
+        root.setBackground(new Background(new BackgroundImage(
+                new Image("\\sample\\menu.png"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(Utill.pageSize, Utill.screenHeight, true, true, true, true))));
 
         Scene scene = new Scene(root, Utill.pageSize, Utill.screenHeight);
+        this.setTitle("PLANT VS ZOMBIE WITH MICRO");
         this.setScene(scene);
         this.setResizable(false);
         this.getIcons().add(0,new Image("\\sample\\icon.png"));
@@ -249,6 +257,7 @@ public class GameBoard extends Stage {
                 Bonus.clicked = false;
                 //  bufferedWriter.write("");
 
+                // TODO: 7/16/2019  agar onja ke click kard bonus nabod else payini copy she
 
             } else {
                // System.out.println("kiram to masoud ");
@@ -256,7 +265,7 @@ public class GameBoard extends Stage {
 //                bufferedWriter.flush();
                 uart.addCharacter("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX()));
             //  uart.send("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
-                System.out.println("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
+                //System.out.println("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
              //   System.out.println("kiram dobare to masoud");
             }
         } catch (Exception e) {

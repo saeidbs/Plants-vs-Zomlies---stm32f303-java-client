@@ -16,17 +16,16 @@ import sample.game.GameBoard;
 import sample.utills.Utill;
 
 
-
 public abstract class Zombie extends ImageView {
-    private int kind,health;
+    private int kind, health;
 
-    int row,column;
-    
+    int row, column;
+
     public Zombie(int kind, int row, int column) {
-        this.row=row;
-        this.column=column;
-        this.kind=kind;
-        this.health=kind;
+        this.row = row;
+        this.column = column;
+        this.kind = kind;
+        this.health = kind;
 
         setLayoutX(getxPosition());
         setLayoutY(getyPosition());
@@ -34,16 +33,17 @@ public abstract class Zombie extends ImageView {
         setFitHeight(Utill.zombieFitHeight);
         setImage(kind);
     }
-    public  void move(int row,int column){
+
+    public void move(int row, int column) {
         //        ImageView imageView=new ImageView();
 
-        AnimationTimer animationTimer=new AnimationTimer() {
+        AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 Zombie.this.setY(Zombie.this.getY() + Utill.animationStep);
-                if (Zombie.this.getY() >getyPosition()+rowToY(Math.abs(row-Zombie.this.row))) {
-                    Zombie.this.row=row;
-                    Zombie.this.column=column;
+                if (Zombie.this.getY() > getyPosition() + rowToY(Math.abs(row - Zombie.this.row))) {
+                    Zombie.this.row = row;
+                    Zombie.this.column = column;
                     this.stop();
                 }
             }
@@ -53,23 +53,27 @@ public abstract class Zombie extends ImageView {
         animationTimer.start();
 
     }
-    private   void setImage(int kind){
-        String path="";
-        switch (kind){
-            case 1 :
-                    path="\\sample\\game\\zombie\\LevelOneZombie.png";
-                     break;
-            case 2:
-                     path="\\sample\\game\\zombie\\LevelTwoZombie.png";
-                     break;
-            case 3: path="\\sample\\game\\zombie\\LevelThreeZombie.png";
-                    break;
-            case 4:path="\\sample\\game\\zombie\\LevelFourZombie.png";
+
+    private void setImage(int kind) {
+        String path = "";
+        switch (kind) {
+            case 1:
+                path = "\\sample\\game\\zombie\\LevelOneZombie.png";
                 break;
-            case  5: path="\\sample\\wormHalf.png";
-            break;
+            case 2:
+                path = "\\sample\\game\\zombie\\LevelTwoZombie.png";
+                break;
+            case 3:
+                path = "\\sample\\game\\zombie\\LevelThreeZombie.png";
+                break;
+            case 4:
+                path = "\\sample\\game\\zombie\\LevelFourZombie.png";
+                break;
+            case 5:
+                path = "\\sample\\wormHalf.png";
+                break;
         }
-                super.setImage(new Image(path));
+        super.setImage(new Image(path));
 
 
     }
@@ -90,14 +94,13 @@ public abstract class Zombie extends ImageView {
         return rowToY(row);
     }
 
-    public static int rowToY(int row){
-        return row* Utill.zombieFitHeight;
-    }
-    public static int columnToX(int column){
-        return column* Utill.zombieFitWidth;
+    public static int rowToY(int row) {
+        return row * Utill.zombieFitHeight;
     }
 
-
+    public static int columnToX(int column) {
+        return column * Utill.zombieFitWidth;
+    }
 
 
 }
