@@ -94,14 +94,14 @@ public class GameBoard extends Stage {
 
         pane.setLayoutX(leftVBox.getPrefWidth());
         pane.setLayoutY(0);
-        pane.setPrefSize(Utill.zombieFitWidth * 20, Utill.screenHeight+20);
+        pane.setPrefSize(Utill.zombieFitWidth * 20, Utill.screenHeight + 20);
 
         pane.setBackground(new Background(new BackgroundImage(
                 new Image("\\sample\\Wiki-background.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                new BackgroundSize(Utill.pageSize / 1.25 - 30, Utill.screenHeight+20, true, true, true, true))));
+                new BackgroundSize(Utill.pageSize / 1.25 - 30, Utill.screenHeight + 20, true, true, true, true))));
 
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -137,7 +137,7 @@ public class GameBoard extends Stage {
             @Override
             public void handle(MouseEvent mouseEvent) {
 
-                new Result(true,5000).show();
+                new Result(true, 5000).show();
                 creatBonus(1, 3, 3);
                 creatBonus(2, 3, 15);
                 creatBonus(3, 2, 15);
@@ -149,14 +149,14 @@ public class GameBoard extends Stage {
 
 
                 TextInputDialog textInputDialog = new TextInputDialog(Utill.defaultName);
-                ((Stage)textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
+                ((Stage) textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0, new Image("\\sample\\icon.png"));
 
                 textInputDialog.setTitle(Utill.saveGameTitle);
                 textInputDialog.setHeaderText(Utill.headerDialogInputNewGame);
                 textInputDialog.setContentText(Utill.contexDialogInputNewGame);
-                ImageView imageView= new ImageView("\\sample\\alert-graphic.png");
-                imageView.setFitWidth(20*Utill.screenUnit);
-                imageView.setFitHeight(20*Utill.screenUnit);
+                ImageView imageView = new ImageView("\\sample\\alert-graphic.png");
+                imageView.setFitWidth(20 * Utill.screenUnit);
+                imageView.setFitHeight(20 * Utill.screenUnit);
                 textInputDialog.setGraphic(imageView);
 
 
@@ -235,7 +235,7 @@ public class GameBoard extends Stage {
         this.setTitle("PLANT VS ZOMBIE WITH MICRO");
         this.setScene(scene);
         this.setResizable(false);
-        this.getIcons().add(0,new Image("\\sample\\icon.png"));
+        this.getIcons().add(0, new Image("\\sample\\icon.png"));
     }
 
 
@@ -260,13 +260,13 @@ public class GameBoard extends Stage {
                 // TODO: 7/16/2019  agar onja ke click kard bonus nabod else payini copy she
 
             } else {
-               // System.out.println("kiram to masoud ");
+                // System.out.println("kiram to masoud ");
 //                bufferedWriter.write("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
 //                bufferedWriter.flush();
-                uart.addCharacter("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX()));
-            //  uart.send("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
+                uart.addCharacter("pc:" + plantSelectedID + "," + Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX()));
+                //  uart.send("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
                 //System.out.println("pc:" + plantSelectedID+","+Plant.ytoRow((int) mouseEvent.getY()) + "," + Plant.xtoColumn((int) mouseEvent.getX())+"\n");
-             //   System.out.println("kiram dobare to masoud");
+                //   System.out.println("kiram dobare to masoud");
             }
         } catch (Exception e) {
 
@@ -506,7 +506,7 @@ public class GameBoard extends Stage {
         });
     }
 
-    public void setPlantEnable(int kind, int enable) {
+    private void setPlantEnableLabel(int kind, int enable) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -540,16 +540,53 @@ public class GameBoard extends Stage {
         });
     }
 
+    public void setPlantEnable(long microTime) {
+        for (int kind=1;kind<4;kind++) {
+            if (kind == 1) {
+                if (microTime > LevelOnePlant.plantCanBeUsed)
+                    setPlantEnableLabel(kind, 1);
+                else
+                    setPlantEnableLabel(kind, 0);
+
+            } else if (kind == 2) {
+                if (microTime > LevelTwoPlant.plantCanBeUsed)
+                    setPlantEnableLabel(kind, 1);
+                else
+                    setPlantEnableLabel(kind, 0);
+            } else if (kind == 3) {
+                if (microTime > LevelThreePlant.plantCanBeUsed)
+                    setPlantEnableLabel(kind, 1);
+                else
+                    setPlantEnableLabel(kind, 0);
+            }
+        }
+    }
+
 
     private void saveGame(String string) {
 
+    }
+
+    public void setplantCanBeUsed(int kind,long time){
+
+        switch (kind){
+            case 1:
+                LevelOnePlant.setplantCanBeUsed(time);
+                break;
+            case 2:
+                LevelTwoPlant.setplantCanBeUsed(time);
+                break;
+            case 3:
+                LevelThreePlant.setplantCanBeUsed(time);
+                break;
+        }
     }
 
     public GameBoard(Uart uart) {
         this();
         this.uart = uart;
         // TODO: 7/13/2019 hazf she
-     //  bufferedWriter = uart.getWriter();
+        //  bufferedWriter = uart.getWriter();
     }
 
 }

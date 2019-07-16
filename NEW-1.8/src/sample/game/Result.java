@@ -21,40 +21,16 @@ public class Result extends Stage {
 
     private Label resultLabel;
     private Label scoreLabel;
-    private Button newGameButton;
+
     private Button exitButton;
 
     private Result() {
         resultLabel = new Label("Result");
         scoreLabel = new Label("Score:");
-        newGameButton = new Button("NEW GAME");
         exitButton = new Button("EXIT GAME");
 
         DropShadow dropShadow = new DropShadow();
-        newGameButton.addEventFilter(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                newGameButton.setEffect(dropShadow);
-            }
-        });
 
-        newGameButton.addEventFilter(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                newGameButton.setEffect(null);
-            }
-        });
-
-        newGameButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-               // Utill.controller.showGameBoard();
-                Result.this.close();
-                controller.getGameBoard().close();
-                controller.setGameBoard();
-                controller.getGameBoard().show();
-            }
-        });
 
         exitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -83,19 +59,20 @@ public class Result extends Stage {
 
 
 
-        HBox hBox = new HBox();
-        hBox.getChildren().addAll(newGameButton, exitButton);
-        hBox.setSpacing(3* Utill.screenUnit);
-        hBox.setAlignment(Pos.CENTER);
+//        HBox hBox = new HBox();
+//        hBox.getChildren().addAll(newGameButton, exitButton);
+//        hBox.setSpacing(3* Utill.screenUnit);
+//        hBox.setAlignment(Pos.CENTER);
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(resultLabel, scoreLabel,hBox);
+        vBox.getChildren().addAll(resultLabel, scoreLabel,exitButton);
         vBox.setSpacing(5 * Utill.screenUnit);
         vBox.setAlignment(Pos.CENTER);
-        vBox.setLayoutX(100 * Utill.screenUnit / 3-5);
-        vBox.setLayoutY(100 * Utill.screenUnit / 4);
 
-        VBox.setMargin(hBox,new Insets(50,0,0,0));
+        vBox.setLayoutX(100 * Utill.screenUnit / 3+17);
+        vBox.setLayoutY(100 * Utill.screenUnit / 4+30);
+
+        VBox.setMargin(exitButton,new Insets(50,0,0,0));
 //        hBox.setLayoutX(100 * Utill.screenUnit / 3-20);
 //        hBox.setLayoutY(100 * Utill.screenUnit / 2);
 
@@ -115,7 +92,8 @@ public class Result extends Stage {
         this.setTitle("Finish");
         this.setResizable(false);
         this.setScene(scene);
-        
+        this.getIcons().add(0, new Image("\\sample\\icon.png"));
+
 
     }
 
@@ -126,7 +104,7 @@ public class Result extends Stage {
         else
             resultLabel.setText("GAME OVER");
 
-        this.scoreLabel.setText("YOUR SCORE IS: "+score);
+        scoreLabel.setText("YOUR SCORE IS: "+score);
 
     }
 }

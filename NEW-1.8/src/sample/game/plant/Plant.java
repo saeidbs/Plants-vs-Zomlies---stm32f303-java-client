@@ -93,4 +93,6 @@ public abstract class Plant extends ImageView {
     public int columnToX(int column) {
         return column * Utill.plantFitWidth;
     }
+
+
 }
