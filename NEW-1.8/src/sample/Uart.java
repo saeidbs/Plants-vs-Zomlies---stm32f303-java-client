@@ -49,7 +49,7 @@ public class Uart {
                     System.out.println("Connect 2/2");
                     SerialPort serialPort = (SerialPort) commPort;
 
-                    serialPort.setSerialPortParams(38400,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+                    serialPort.setSerialPortParams(115200,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
 
                     System.out.println("BaudRate: " + serialPort.getBaudRate());
                     System.out.println("DataBIts: " + serialPort.getDataBits());
