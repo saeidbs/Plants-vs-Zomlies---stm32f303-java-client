@@ -1,49 +1,65 @@
 package sample;
 
 
-
-import com.sun.webkit.network.Util;
-import javafx.animation.PathTransition;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
-import javafx.util.Duration;
-import sample.game.GameBoard;
+import sample.game.SaveLoadFile;
 import sample.utills.Utill;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static sample.utills.Utill.controller;
 
 public class Menu extends Stage {
     private Button newGameButton;
     private Button loadGameButton;
     private Button aboutGameButton;
     private DropShadow dropShadow = new DropShadow();
-    private void aboutGameListener(){
+    private Alert alert;
+    private String load="";
 
-        Alert alert=new Alert(Alert.AlertType.INFORMATION, Utill.aboutGameMessage);
+
+    private void aboutGameListener() {
+
+        //controller.getUart().addCharacter("state:"+Utill.stateAbout);
+        controller.getUart().addCharacter("state:"+Utill.stateAbout);
+
+        alert = new Alert(Alert.AlertType.INFORMATION, Utill.aboutGameMessage);
         alert.setTitle(Utill.aboutGameTitle);
         alert.setHeaderText(Utill.aboutGameHeader);
 
-        alert.show();
+        //alert.setHeaderText(null);
+        ImageView imageView = new ImageView("\\sample\\alert-graphic.png");
+        imageView.setFitWidth(20 * Utill.screenUnit);
+        imageView.setFitHeight(20 * Utill.screenUnit);
+        alert.setGraphic(imageView);
+
+        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(0, new Image("\\sample\\icon.png"));
+
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(!result.isPresent()||result.get() == ButtonType.OK)
+            controller.getUart().addCharacter("state:"+Utill.stateMenu);
+
     }
 
-    private void newGameButtonListener(){
-        Utill.controller.showGameBoard();
+    private void newGameButtonListener() {
+
+        controller.getUart().addCharacter("state:"+Utill.stateNewGame);
+        controller.showGameBoard();
         this.close();
 
 //        TextInputDialog textInputDialog=new TextInputDialog(Utill.defaultName);
@@ -59,33 +75,58 @@ public class Menu extends Stage {
 //        });
 
     }
-    private void loadGameButtonListener(){
 
+    private void loadGameButtonListener() {
+
+        TextInputDialog textInputDialog = new TextInputDialog("SaveName");
+
+        textInputDialog.setTitle("Load Game");
+        textInputDialog.setHeaderText("Enter Your Save name");
+        textInputDialog.setContentText("Name:");
+
+        ((Stage)textInputDialog.getDialogPane().getScene().getWindow()).getIcons().add(0,new Image("\\sample\\icon.png"));
+
+        ImageView imageView= new ImageView("\\sample\\alert-graphic.png");
+        imageView.setFitWidth(20*Utill.screenUnit);
+        imageView.setFitHeight(20*Utill.screenUnit);
+        textInputDialog.setGraphic(imageView);
+        Optional<String> result = textInputDialog.showAndWait();
+
+        result.ifPresent(name -> {
+           load=SaveLoadFile.load(name);
+            System.out.println(load);
+
+        });
+
+//        if (!SaveLoadFile.load("C").equals(""))
+//            System.out.println("yes");
+//        else System.out.println("wow");
+      //  aboutGameButton.fire();
 //       Utill.controller.showGameBoard();
 //        this.close();
     }
 
     public Menu() {
 
-         GridPane gridPane=new GridPane();
-        gridPane.setPadding(new Insets(10*Utill.screenUnit));
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10 * Utill.screenUnit));
         gridPane.setAlignment(Pos.TOP_CENTER);
-        gridPane.setVgap(10*Utill.screenUnit);
-        gridPane.setHgap(1* Utill.screenUnit);
+        gridPane.setVgap(10 * Utill.screenUnit);
+        gridPane.setHgap(1 * Utill.screenUnit);
 
         gridPane.setBackground(new Background(new BackgroundImage(
                 new Image("\\sample\\menu.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                new BackgroundSize(100*Utill.screenUnit, 100*Utill.screenUnit, true, true, true, true))));
+                new BackgroundSize(100 * Utill.screenUnit, 100 * Utill.screenUnit, true, true, true, true))));
 
 
-        Label welcomeLabel=new Label(Utill.menuWelcome);
+        Label welcomeLabel = new Label(Utill.menuWelcome);
         GridPane.setHalignment(welcomeLabel, HPos.CENTER);
-        gridPane.add(welcomeLabel,1,0);
+        gridPane.add(welcomeLabel, 1, 0);
 
-        aboutGameButton=new Button(Utill.aboutGameTitle);
+        aboutGameButton = new Button(Utill.aboutGameTitle);
         aboutGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -106,9 +147,7 @@ public class Menu extends Stage {
         });
 
 
-
-
-        newGameButton =new Button(Utill.newGameTitle);
+        newGameButton = new Button(Utill.newGameTitle);
 
         newGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -130,11 +169,7 @@ public class Menu extends Stage {
         });
 
 
-
-
-
-
-        loadGameButton=new Button(Utill.loadGameTitle);
+        loadGameButton = new Button(Utill.loadGameTitle);
         loadGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -155,21 +190,53 @@ public class Menu extends Stage {
         });
 
 
-
-
-        VBox vBox=new VBox();
-        vBox.getChildren().addAll(newGameButton,loadGameButton,aboutGameButton);
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(newGameButton, loadGameButton, aboutGameButton);
         vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(2*Utill.screenUnit);
+        vBox.setSpacing(2 * Utill.screenUnit);
 
-        gridPane.add(vBox,1,2);
+        gridPane.add(vBox, 1, 2);
 
-        Scene scene=new Scene(gridPane,100*Utill.screenUnit,100*Utill.screenUnit);
+        Scene scene = new Scene(gridPane, 100 * Utill.screenUnit, 100 * Utill.screenUnit);
 
         this.setTitle(Utill.menuTitle);
         this.setResizable(false);
         this.setScene(scene);
-        this.getIcons().add(0,new Image("\\sample\\icon.png"));
+        this.getIcons().add(0, new Image("\\sample\\icon.png"));
+
+    }
+
+    public void aboutGameButtonFire(boolean bool) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if (bool)
+                    aboutGameButton.fire();
+                else
+                    ((Stage) alert.getDialogPane().getScene().getWindow()).close();
+
+            }
+        });
+    }
+
+    public void loadGameButtonFire() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                loadGameButton.fire();
+            }
+        });
+    }
+
+    public void newGameButtonFire() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                newGameButton.fire();
+            }
+        });
 
     }
 }

@@ -49,7 +49,7 @@ public class Uart {
                     System.out.println("Connect 2/2");
                     SerialPort serialPort = (SerialPort) commPort;
 
-                    serialPort.setSerialPortParams(38400,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+                    serialPort.setSerialPortParams(115200,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
 
                     System.out.println("BaudRate: " + serialPort.getBaudRate());
                     System.out.println("DataBIts: " + serialPort.getDataBits());
@@ -85,6 +85,8 @@ public class Uart {
         return new BufferedWriter(new OutputStreamWriter(out));
     }
     public void addCharacter(String string){
+        string+="\n";
+        System.out.println("saeid send:"+string);
         char[] characters=string.toCharArray();
         for (int i=0;i<characters.length;i++)
             queue.add(characters[i]);

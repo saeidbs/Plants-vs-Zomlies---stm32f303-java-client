@@ -10,6 +10,9 @@ public abstract class Utill {
 
 
 
+    public static final int stateMenu=0;
+    public static final int stateAbout=1;
+    public static final int stateNewGame=2;
 
     public static final int screenUnit=4;
     public static final int pageSize=250 * screenUnit*15/10;
@@ -29,7 +32,7 @@ public abstract class Utill {
 
 
 
-    public static final String aboutGameMessage="bazi kon pare shi bekhandim";
+    public static final String aboutGameMessage="This is Plants VS Zombie With Micro";
     public static final String aboutGameTitle="About Game";
     public static final String menuWelcome="Welcome To Game";
     public static final String newGameTitle="New Game";

@@ -5,38 +5,42 @@ import sample.game.GameBoard;
 public class Controller {
 
 
+    private Menu menu = new Menu();
+    private Uart uart;
+    //private GameBoard gameBoard=new GameBoard(uart);
+    private GameBoard gameBoard;
 
 
-private Menu menu=new Menu();
-private Uart uart;
-private GameBoard gameBoard=new GameBoard(uart);
+    public void showMenu() {
+        menu.show();
 
+    }
 
-public void showMenu(){
-    menu.show();
-
-}
-public void showGameBoard(){
-    gameBoard.show();
-}
+    public void showGameBoard() {
+        gameBoard.show();
+    }
 
     public Uart getUart() {
         return uart;
     }
 
-    public void setUart(String string){
+    public void setUart(String string) {
 
-    uart=new Uart(string);
+        uart = new Uart(string);
 
     }
 
-    public void setGameBoard(){
+    public void setGameBoard() {
 
-    gameBoard=new GameBoard(uart);
+        gameBoard = new GameBoard(uart);
 
     }
 
     public GameBoard getGameBoard() {
         return gameBoard;
+    }
+
+    public Menu getMenu() {
+        return menu;
     }
 }
