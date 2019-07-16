@@ -135,6 +135,9 @@ public class Main extends Application {
                                         case "game":
                                             controller.getMenu().newGameButtonFire();
                                             break;
+                                        case "load_game":
+                                            controller.getMenu().loadGameButtonFire();
+                                            break;
                                         case "game_over":
                                             Platform.runLater(new Runnable() {
                                                 @Override
