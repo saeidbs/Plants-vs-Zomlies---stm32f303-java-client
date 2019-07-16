@@ -137,10 +137,10 @@ public class GameBoard extends Stage {
             @Override
             public void handle(MouseEvent mouseEvent) {
 
-                new Result(true, 5000).show();
-                creatBonus(1, 3, 3);
-                creatBonus(2, 3, 15);
-                creatBonus(3, 2, 15);
+//                new Result(true, 5000).show();
+//                creatBonus(1, 3, 3);
+//                creatBonus(2, 3, 15);
+//                creatBonus(3, 2, 15);
 //                creatPlant(1,3,8);
 //                creatZombie(1,1,7);
 //                removeZombie(0,19);
@@ -256,7 +256,7 @@ public class GameBoard extends Stage {
             if (Bonus.clicked) {
                 Bonus.clicked = false;
                 //  bufferedWriter.write("");
-
+                uart.addCharacter("br:");
                 // TODO: 7/16/2019  agar onja ke click kard bonus nabod else payini copy she
 
             } else {
