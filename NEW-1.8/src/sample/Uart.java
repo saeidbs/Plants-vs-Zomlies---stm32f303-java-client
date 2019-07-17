@@ -22,7 +22,7 @@ public class Uart {
             if (!queue.isEmpty())
                 send(queue.poll()+"");
            }
-       },0,10);
+       },0,20);
     }
 
     public void send(String text) {

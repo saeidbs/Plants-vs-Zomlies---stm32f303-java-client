@@ -113,7 +113,7 @@ public class Main extends Application {
                                 Zombie.setZombieSpeed(getInt(array[0]));
                                 break;
                             case "t":
-                                controller.getGameBoard().setTimeLabel(array[0]);
+                                controller.getGameBoard().setTimeLabel(Long.valueOf(array[0]));
                                 controller.getGameBoard().setPlantEnable(Long.valueOf(array[0]));
                                 break;
                             case "ls":
@@ -121,6 +121,9 @@ public class Main extends Application {
                                 break;
                             case "pe":
                                 controller.getGameBoard().setplantCanBeUsed(getInt(array[0]), Long.valueOf(array[1]));
+                                break;
+                            case "start_time_game":
+                                controller.getGameBoard().setStartTimeGame(Long.valueOf(array[0]));
                                 break;
                             case "save":
                                 SaveLoadFile.save(dataString);
