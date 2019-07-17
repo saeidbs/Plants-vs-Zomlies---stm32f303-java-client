@@ -33,7 +33,7 @@ public abstract class Utill {
 
 
 
-    public static final String aboutGameMessage="This is Plants VS Zombie With Micro";
+    public static final String aboutGameMessage="This is Plants VS Zombie With Micro\nProduse by: Saeid Bahmani AND Masoud Kermanipoor";
     public static final String aboutGameTitle="About Game";
     public static final String menuWelcome="Welcome To Game";
     public static final String newGameTitle="New Game";

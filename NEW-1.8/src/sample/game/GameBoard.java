@@ -215,7 +215,7 @@ public class GameBoard extends Stage {
 
 
        // rightVBox.getChildren().addAll(scoreLabel, lifeLabel, temperatureLabel, subRightVbox, saveButton);
-        rightVBox.getChildren().addAll(lifeLabel, temperatureLabel, subRightVbox, saveButton);
+        rightVBox.getChildren().addAll(lifeLabel, temperatureLabel, subRightVbox);
         //rightVBox.setAlignment(Pos.CENTER);
         rightVBox.setSpacing(2 * Utill.screenUnit);
         rightVBox.setLayoutX(pane.getLayoutX() + pane.getPrefWidth());
