@@ -28,7 +28,7 @@ public abstract class Utill {
     public static int bonusFitWidth=(int)((Utill.pageSize/1.25-30)/20);
     public static int bonusFitHeight=(int)(Utill.screenHeight/4);
 
-    public static double animationStep=3;
+    public static double animationStep=3*10;
 
 
 

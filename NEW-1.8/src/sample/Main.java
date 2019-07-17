@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import sample.game.Result;
 import sample.game.SaveLoadFile;
+import sample.game.zombie.Zombie;
 import sample.utills.Utill;
 
 import java.io.BufferedReader;
@@ -109,6 +110,7 @@ public class Main extends Application {
                                 break;
                             case "r":
                                 controller.getGameBoard().setRoundLabel(array[0]);
+                                Zombie.setZombieSpeed(getInt(array[0]));
                                 break;
                             case "t":
                                 controller.getGameBoard().setTimeLabel(array[0]);
