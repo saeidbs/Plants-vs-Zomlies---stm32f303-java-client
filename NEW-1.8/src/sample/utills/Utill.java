@@ -29,10 +29,11 @@ public abstract class Utill {
     public static int bonusFitHeight=(int)(Utill.screenHeight/4);
 
     public static double animationStep=3;
+    public final static int TIME_TO_SEC=1000;
 
 
 
-    public static final String aboutGameMessage="This is Plants VS Zombie With Micro";
+    public static final String aboutGameMessage="This is Plants VS Zombie With Micro\nProduse by: Saeid Bahmani AND Masoud Kermanipoor";
     public static final String aboutGameTitle="About Game";
     public static final String menuWelcome="Welcome To Game";
     public static final String newGameTitle="New Game";

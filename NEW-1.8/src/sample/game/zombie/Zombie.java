@@ -18,7 +18,7 @@ import sample.utills.Utill;
 
 public abstract class Zombie extends ImageView {
     private int kind, health;
-
+    private static double speed = Utill.animationStep;
     int row, column;
 
     public Zombie(int kind, int row, int column) {
@@ -40,12 +40,14 @@ public abstract class Zombie extends ImageView {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                Zombie.this.setY(Zombie.this.getY() + Utill.animationStep);
+                Zombie.this.setY(Zombie.this.getY() + speed);
                 if (Zombie.this.getY() > getyPosition() + rowToY(Math.abs(row - Zombie.this.row))) {
                     Zombie.this.row = row;
                     Zombie.this.column = column;
+                    Zombie.this.setY(getyPosition());
                     this.stop();
                 }
+
             }
         };
 
@@ -100,6 +102,10 @@ public abstract class Zombie extends ImageView {
 
     public static int columnToX(int column) {
         return column * Utill.zombieFitWidth;
+    }
+
+    public static void setZombieSpeed(int level) {
+        speed = Utill.animationStep * Math.pow(1.1, level - 1);
     }
 
 

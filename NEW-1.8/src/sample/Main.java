@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import sample.game.Result;
 import sample.game.SaveLoadFile;
+import sample.game.zombie.Zombie;
 import sample.utills.Utill;
 
 import java.io.BufferedReader;
@@ -24,6 +25,7 @@ import static sample.utills.Utill.controller;
 
 public class Main extends Application {
     private static Timer timer = new Timer();
+    private Result result=new Result();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -106,12 +108,14 @@ public class Main extends Application {
                                 break;
                             case "s":
                                 controller.getGameBoard().setScoreLabel(array[0]);
+                               Main.this.result.setScoreLabel(getInt(array[0]));
                                 break;
                             case "r":
                                 controller.getGameBoard().setRoundLabel(array[0]);
+                                Zombie.setZombieSpeed(getInt(array[0]));
                                 break;
                             case "t":
-                                controller.getGameBoard().setTimeLabel(array[0]);
+                                controller.getGameBoard().setTimeLabel(Long.valueOf(array[0]));
                                 controller.getGameBoard().setPlantEnable(Long.valueOf(array[0]));
                                 break;
                             case "ls":
@@ -119,6 +123,9 @@ public class Main extends Application {
                                 break;
                             case "pe":
                                 controller.getGameBoard().setplantCanBeUsed(getInt(array[0]), Long.valueOf(array[1]));
+                                break;
+                            case "start_time_game":
+                                controller.getGameBoard().setStartTimeGame(Long.valueOf(array[0]));
                                 break;
                             case "save":
                                 SaveLoadFile.save(dataString);
@@ -135,13 +142,17 @@ public class Main extends Application {
                                         case "game":
                                             controller.getMenu().newGameButtonFire();
                                             break;
+                                        case "load_game":
+                                            controller.getMenu().loadGameButtonFire();
+                                            break;
                                         case "game_over":
                                             Platform.runLater(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    System.out.println("saeid bahmani");
+                                                 //   System.out.println("saeid bahmani");
                                                     controller.getGameBoard().close();
-                                                    new Result(false, 200).show();
+                                                    Main.this.result.setResultLabel(false);
+                                                    Main.this.result.show();
                                                 }
                                             });
                                             break;
@@ -150,7 +161,8 @@ public class Main extends Application {
                                             @Override
                                             public void run() {
                                                 controller.getGameBoard().close();
-                                                new Result(true,200).show();
+                                                Main.this.result.setResultLabel(true);
+                                                Main.this.result.show();
                                             }
                                         });
                                             break;

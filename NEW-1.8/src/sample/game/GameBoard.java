@@ -54,6 +54,7 @@ public class GameBoard extends Stage {
     private LevelThreePlant tempLevelThreePlant;
     private Uart uart;
     private BufferedWriter bufferedWriter;
+    private long startTimeGame=-1;
 
 
     private GameBoard() {
@@ -61,9 +62,9 @@ public class GameBoard extends Stage {
         pane = new Pane();
         VBox leftVBox = new VBox();
 
-        timeLabel = new Label("TIME LABEL");
+        timeLabel = new Label("TIME: 0:0");
         roundLabel = new Label("ROUND LABEL");
-        informationText = new Text("informationLabelinformationLabelinformationLabelinformationLabelinformationLabelinformationLabel\n");
+        informationText = new Text();
         //  informationText.prefHeight(Utill.screenHeight);
 //        for (int i=0;i<7;i++){
 //            informationText.setText(informationText.getText()+informationText.getText());
@@ -213,7 +214,8 @@ public class GameBoard extends Stage {
         subRightVbox.setPrefSize(129, Utill.screenHeight / 3);
 
 
-        rightVBox.getChildren().addAll(scoreLabel, lifeLabel, temperatureLabel, subRightVbox, saveButton);
+       // rightVBox.getChildren().addAll(scoreLabel, lifeLabel, temperatureLabel, subRightVbox, saveButton);
+        rightVBox.getChildren().addAll(lifeLabel, temperatureLabel, subRightVbox);
         //rightVBox.setAlignment(Pos.CENTER);
         rightVBox.setSpacing(2 * Utill.screenUnit);
         rightVBox.setLayoutX(pane.getLayoutX() + pane.getPrefWidth());
@@ -230,6 +232,16 @@ public class GameBoard extends Stage {
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(Utill.pageSize, Utill.screenHeight, true, true, true, true))));
+
+
+
+
+        setLifeLabel("5");
+        setRoundLabel("1");
+        setTemperatureLabel("50");
+
+
+
 
         Scene scene = new Scene(root, Utill.pageSize, Utill.screenHeight);
         this.setTitle("PLANT VS ZOMBIE WITH MICRO");
@@ -444,12 +456,18 @@ public class GameBoard extends Stage {
 
     }
 
-    public void setTimeLabel(String string) {
+    public void setTimeLabel(long time) {
+
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-
-                timeLabel.setText("TIME: " + string);
+                if (startTimeGame>-1) {
+                    long sec = (time - startTimeGame) / Utill.TIME_TO_SEC;
+                    long min = sec / 60;
+                    sec = sec % 60;
+                    timeLabel.setText("TIME: " + min + ":" + sec);
+                }
             }
         });
 
@@ -501,7 +519,7 @@ public class GameBoard extends Stage {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                informationText.setText(string + "\n" + informationText.toString());
+                informationText.setText("\t"+string + "\n" + informationText.getText());
             }
         });
     }
@@ -581,6 +599,12 @@ public class GameBoard extends Stage {
                 break;
         }
     }
+    public void setStartTimeGame(long time){
+        startTimeGame=time;
+    }
+
+
+
 
     public GameBoard(Uart uart) {
         this();
@@ -588,5 +612,6 @@ public class GameBoard extends Stage {
         // TODO: 7/13/2019 hazf she
         //  bufferedWriter = uart.getWriter();
     }
+
 
 }
