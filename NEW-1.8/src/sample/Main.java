@@ -10,16 +10,19 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import sample.game.Result;
 import sample.game.SaveLoadFile;
-import sample.game.zombie.Zombie;
+import sample.game.plant.LevelOnePlant;
+import sample.game.plant.LevelThreePlant;
+import sample.game.plant.LevelTwoPlant;
+import sample.game.plant.Plant;
+import sample.game.zombie.*;
 import sample.utills.Utill;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import static sample.utills.Utill.controller;
 
@@ -130,6 +133,9 @@ public class Main extends Application {
                             case "save":
                                 SaveLoadFile.save(dataString);
                                 break;
+                            case "sync":
+                                syncMap(array);
+                                break;
                             case "state":
                                 if (!array[0].equals(state)) {
                                     switch (array[0]) {
@@ -181,10 +187,90 @@ public class Main extends Application {
                     e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
+
                 }
             }
         }, 0, 10);
 
+
+    }
+    private void syncMap(String[] array){
+        controller.getGameBoard().clearMap();
+
+
+
+//         Map<Pair<Integer, Integer>, Zombie> tempZombieMap = new HashMap<>();
+//         Map<Pair<Integer, Integer>, Plant> tempPlantMap = new HashMap<>();
+        for (int i=1;i<=3*getInt(array[0]);i+=3){
+//            int row=getInt(array[i+1]);
+//            int column=getInt(array[i+2]);
+//            Plant plant = null;
+//            switch (getInt(array[i])) {
+//                case 1:
+//                    plant = new LevelOnePlant(row, column);
+//                    break;
+//                case 2:
+//                    plant = new LevelTwoPlant(row, column);
+//                    break;
+//                case 3:
+//                    plant = new LevelThreePlant(row, column);
+//                    break;
+//            }
+//            tempPlantMap.put(new Pair<>(row,column),plant);
+          controller.getGameBoard().creatPlant(getInt(array[i]),getInt(array[i+1]),getInt(array[i+2]));
+        }
+
+//        controller.getGameBoard().getPlantMap().forEach((pair, plant) -> {
+//            if (!tempPlantMap.containsKey(pair)) {
+//                controller.getGameBoard().removePlant(pair.getKey(), pair.getValue());
+//               // System.out.println("for aval");
+//            }
+//        });
+//        tempPlantMap.forEach((pair,plant)->{
+//            if (!controller.getGameBoard().getPlantMap().containsKey(pair))
+//                controller.getGameBoard().creatPlant(plant.getKind(),pair.getKey(),pair.getValue());
+//        });
+
+
+        for (int i=3*getInt(array[0])+2;i<array.length;i+=3){
+            controller.getGameBoard().creatZombie(getInt(array[i]),getInt(array[i+1]),getInt(array[i+2]));
+        }
+//        for (int i=3*getInt(array[0])+2;i<array.length;i+=3) {
+//            int row = getInt(array[i + 1]);
+//            int column = getInt(array[i + 2]);
+//            Zombie zombie = null;
+//            switch (getInt(array[i])) {
+//                case 1:
+//                    zombie = new LevelOneZombie(row, column);
+//                    break;
+//                case 2:
+//                    zombie = new LevelTwoZombie(row, column);
+//                    break;
+//                case 3:
+//                    zombie = new LevelThreeZombie(row, column);
+//                    break;
+//                case 4:
+//                    zombie = new LevelFourZombie(row, column);
+//                    break;
+//
+//            }
+//            tempZombieMap.put(new Pair<>(row, column), zombie);
+//        }
+//
+//
+//
+//        controller.getGameBoard().getZombieMap().forEach((pair, zombie) -> {
+//            if (tempZombieMap.get(pair)==null) {
+//                System.out.println("for dovom");
+//                controller.getGameBoard().removeZombie(pair.getKey(), pair.getValue());
+//            }
+//        });
+//        tempZombieMap.forEach((pair,zombie)->{
+//            if (controller.getGameBoard().getZombieMap().get(pair)==null) {
+//                System.out.println("for aval");
+//                controller.getGameBoard().creatZombie(zombie.getKind(), pair.getKey(), pair.getValue());
+//            }
+//        });
 
     }
 

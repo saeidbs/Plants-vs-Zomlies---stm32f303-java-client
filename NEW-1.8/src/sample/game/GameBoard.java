@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static sample.utills.Utill.controller;
+
 
 public class GameBoard extends Stage {
     private Label timeLabel;
@@ -376,11 +378,18 @@ public class GameBoard extends Stage {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                try {
+
                 Zombie zombie;
 
                 zombie = zombieMap.remove(new Pair<>(oldRow, oldColumn));
                 zombieMap.put(new Pair<>(newRow, newColumn), zombie);
                 zombie.move(newRow, newColumn);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    uart.addCharacter("sync:");
+                }
             }
         });
 
@@ -602,9 +611,26 @@ public class GameBoard extends Stage {
     public void setStartTimeGame(long time){
         startTimeGame=time;
     }
+    public void clearMap(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+             zombieMap.clear();
+             plantMap.clear();
+             pane.getChildren().clear();
+
+            }
+        });
+    }
 
 
+    public Map<Pair<Integer, Integer>, Zombie> getZombieMap() {
+        return zombieMap;
+    }
 
+    public Map<Pair<Integer, Integer>, Plant> getPlantMap() {
+        return plantMap;
+    }
 
     public GameBoard(Uart uart) {
         this();
@@ -612,6 +638,7 @@ public class GameBoard extends Stage {
         // TODO: 7/13/2019 hazf she
         //  bufferedWriter = uart.getWriter();
     }
+
 
 
 }

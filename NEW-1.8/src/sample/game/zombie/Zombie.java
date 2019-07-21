@@ -105,7 +105,7 @@ public abstract class Zombie extends ImageView {
     }
 
     public static void setZombieSpeed(int level) {
-        speed = Utill.animationStep * Math.pow(1.1, level - 1);
+        speed = Utill.animationStep * Math.pow(1.5, level - 1);
     }
 
 

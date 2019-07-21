@@ -29,7 +29,7 @@ public abstract class Utill {
     public static int bonusFitHeight=(int)(Utill.screenHeight/4);
 
     public static double animationStep=3;
-    public final static int TIME_TO_SEC=1000;
+    public final static int TIME_TO_SEC=600 ;
 
 
 

@@ -30,7 +30,11 @@ public abstract class Plant extends ImageView {
         setFitHeight(Utill.plantFitHeight);
         setImage(kind);
     }
-//  public Plant(int kind,int xPosition, int yPosition) {
+
+    public int getKind() {
+        return kind;
+    }
+    //  public Plant(int kind,int xPosition, int yPosition) {
 //        this.kind = kind;
 //
 //        if (kind==3)
